@@ -1,76 +1,200 @@
+<!DOCTYPE html>
+
 <html>
   <head>
-    <title>LIT / Ceramic Starter Pack Example</title>
-    <script
+    <title>LIT Protocol /+ Ceramic Network Integration</title>
+    <script type="text/javascript" onload="ping()" src="/js/index.js"></script>
+
+    <!-- <script
       onload="LitJsSdk.litJsSdkLoadedInALIT()"
       src="https://jscdn.litgateway.com/index.web.js"
-    ></script>
+    ></script> -->
 
-    <script>
-      async function mintNft() {
+    <!-- <script>
+      const client = new LitJsSdk.LitNodeClient();
+      client.connect();
+      window.litNodeClient = client;
+
+      async function encryptWithLit() {
         document.getElementById("mintingStatus").innerText =
-          "Minting, please wait for the tx to confirm...";
+          "Encrypting, please wait..";
 
         window.chain = document.getElementById("selectedChain").value;
 
+        // window.tokenId = tokenId;
+        // window.tokenAddress = tokenAddress;
+        // window.authSig = authSig;
+
+        const authSig = await LitJsSdk.checkAndSignAuthMessage({
+          chain: window.chain
+        });
+
+        // what shall be encrypted
+        const aStringThatYouWishToEncrypt =
+          "this is what I want to encrypt, for now.";
+
+        // zip and encrypt
         const {
-          txHash,
-          tokenId,
-          tokenAddress,
-          mintingAddress,
-          authSig
-        } = await LitJsSdk.mintLIT({ chain: window.chain, quantity: 1 });
-        window.tokenId = tokenId;
-        window.tokenAddress = tokenAddress;
-        window.authSig = authSig;
+          encryptedZip,
+          symmetricKey
+        } = await LitJsSdk.zipAndEncryptString(aStringThatYouWishToEncrypt);
 
-        document.getElementById("mintingStatus").innerText =
-          "Minted!  Tx hash is " + txHash;
-      }
-
-      async function provisionAccess() {
-        document.getElementById("provisioningStatus").innerText =
-          "Provisioning, please wait...";
-        window.accessControlConditions = [
+        // get access control conditions
+        const accessControlConditions = [
           {
-            contractAddress: LitJsSdk.LIT_CHAINS[window.chain].contractAddress,
-            standardContractType: "ERC1155",
-            chain: window.chain,
-            method: "balanceOf",
-            parameters: [":userAddress", window.tokenId.toString()],
+            contractAddress: "",
+            standardContractType: "",
+            chain: "ethereum",
+            method: "eth_getBalance",
+            parameters: [
+              "0x20598860Da775F63ae75E1CD2cE0D462B8CEe4C7",
+              "latest"
+            ],
             returnValueTest: {
-              comparator: ">",
-              value: "0"
+              comparator: ">=",
+              value: "10000000000000"
             }
           }
         ];
-        // generate a random path because you can only provision access to a given path once
-        const randomUrlPath =
-          "/" +
-          Math.random()
-            .toString(36)
-            .substring(2, 15) +
-          Math.random()
-            .toString(36)
-            .substring(2, 15);
-        window.resourceId = {
-          baseUrl: "my-dynamic-content-server.com",
-          path: randomUrlPath, // this would normally be your url path, like "/webpage.html" for example
-          orgId: "",
-          role: "",
-          extraData: ""
+
+        const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey(
+          {
+            accessControlConditions,
+            symmetricKey,
+            authSig,
+            chain
+          }
+        );
+
+        // encryptedSymmetricKey, accessControlConditions and ofc the actual encryptedZip
+        // all must be stored such to decrypt
+        // console.log("encryptedSYMKEY: \n\n    ", encryptedSymmetricKey);
+        // console.log("-----------------------------");
+        // console.log(
+        //   "accessControlConditions: \n\n    ",
+        //   accessControlConditions
+        // );
+        // console.log("-----------------------------");
+        // console.log("encryptedZip: \n\n    ", encryptedZip);
+
+        // const data = await fetch("/verify?jwt=" + window.jwt).then(resp =>
+        //   resp.json()
+        // );
+        // document.getElementById("verificationStatus").innerText =
+        //   "Verified!  Response is \n" + JSON.stringify(data, null, 2);
+
+        const dataACC = JSON.stringify(accessControlConditions);
+
+        document.getElementById("mintingStatus").innerText =
+          "Encrypted!    encryptedSYMKEY: \n\n    " +
+          encryptedSymmetricKey +
+          "\n\n" +
+          "accessControlConditions: \n\n    " +
+          dataACC +
+          "\n\n" +
+          "encryptedZip: \n\n    " +
+          encryptedZip;
+
+        // URL.createObjectURL(encryptedZip);
+
+        window.accessControlConditionsSave = dataACC;
+        window.encryptedSymmetricKeySave = encryptedSymmetricKey;
+        window.encryptedZipSave = encryptedZip;
+      }
+
+      async function writeToCeramic() {
+        // document.getElementById("provisioningStatus").innerText =
+        //   "Provisioning, please wait...";
+
+        const API_URL = "0.0.0.0:7007"; // "https://ceramic-clay.3boxlabs.com";
+        const ceramic = new CeramicClient(API_URL);
+
+        // assign DID to ceramic client..
+        const resolver = { ...KeyDidResolver.getResolver() };
+        const did = new DID({ resolver });
+        console.log("did: ", did);
+        ceramic.did = did;
+        console.log("did assigned: ", ceramic.did);
+        // console.log("did ID auth?: ", did.id());
+
+        console.log("--------------------------------------");
+        const seed = randomBytes(32);
+        console.log("create seed: ", seed);
+        const provider = new Ed25519Provider(seed);
+        console.log("provide provider: ", provider);
+
+        // assign provider to ceramic node that already has DID attached
+        ceramic.did.setProvider(provider);
+
+        const authing = async () => {
+          const result = await ceramic.did.authenticate();
+          // console.log(await ceramic.did.authenticate());
+          console.log("authing...");
+          return result;
         };
-        await litNodeClient.saveSigningCondition({
-          accessControlConditions: window.accessControlConditions,
-          chain: window.chain,
-          authSig: window.authSig,
-          resourceId: window.resourceId
-        });
+        console.log("highly evolved: ", authing.id);
+        const doc = TileDocument.create(
+          ceramic,
+          { foo: "bart" },
+          {
+            controllers: [ceramic.did.id],
+            family: "doc family",
+            schema: schemaDoc.commitId
+          }
+        );
+        console.log(doc);
+        // const doc = async () => {
+        //   tiledoc = await TileDocument.create(
+        //     ceramic,
+        //     { foo: "bart" },
+        //     {
+        //       controllers: [ceramic.did.id],
+        //       family: "doc family",
+        //       schema: schemaDoc.commitId
+        //     }
+        //   );
+        //   return tiledoc;
+        // };
+        // console.log(doc);
+        // const streamId = doc.id.toString();
+        // console.log("streamID: ", streamId);
+
+        //
+        //
+        //
+        //
+        //
+
+        // window.accessControlConditions = [
+        //   {
+        //     contractAddress: LitJsSdk.LIT_CHAINS[window.chain].contractAddress,
+        //     standardContractType: "ERC1155",
+        //     chain: window.chain,
+        //     method: "balanceOf",
+        //     parameters: [":userAddress", window.tokenId.toString()],
+        //     returnValueTest: {
+        //       comparator: ">",
+        //       value: "0"
+        //     }
+        //   }
+        // ];
+
+        // generate a random path because you can only provision access to a given path once
+
+        // TODO: this is of interest for decrypt compare
+        // await litNodeClient.saveSigningCondition({
+        //   accessControlConditions: window.accessControlConditions,
+        //   chain: window.chain,
+        //   authSig: window.authSig,
+        //   resourceId: window.resourceId
+        // });
+
         document.getElementById("provisioningStatus").innerText =
           "Provisioned!";
       }
 
-      async function requestJwt() {
+      // Query Ceramic and get previously saved data
+      async function query() {
         document.getElementById("requestingStatus").innerText =
           "Requesting JWT, please wait...";
 
@@ -85,93 +209,98 @@
           "JWT Obtained!  It is  " + window.jwt;
       }
 
-      async function verifyJwt() {
-        document.getElementById("verificationStatus").innerText =
-          "Verifying, please wait...";
-        const data = await fetch("/verify?jwt=" + window.jwt).then(resp =>
-          resp.json()
+      async function decryptWithLit() {
+        // Get an auth sig from user (probably again but yeah)
+        const authSigD = await LitJsSdk.checkAndSignAuthMessage({
+          chain: "ethereum"
+        });
+        const acc = window.accessControlConditionsSave;
+        const esk = window.encryptedSymmetricKeySave;
+        const encryptedZip = window.encryptedZipSave;
+        // get that symm key from previously saved details and auth sig
+        console.log("_________________________");
+        console.log(acc);
+        console.log(esk);
+        console.log(encryptedZip);
+        console.log("_________________________");
+        console.log(authSigD);
+        console.log("_________________________");
+
+        const objacc =
+          '[{"contractAddress":"","standardContractType":"","chain":"ethereum","method":"eth_getBalance","parameters":["0x20598860Da775F63ae75E1CD2cE0D462B8CEe4C7","latest"],"returnValueTest":{"comparator":">=","value":"10000000000000"}}]';
+        const symmKey = window.litNodeClient.getEncryptionKey({
+          objacc, // does this need to be a string?  currently getting undefined
+          toDecrypt: esk,
+          chain,
+          authSigD
+        });
+        console.log("decrypting... \n\n ", window.encryptedZipSave);
+
+        const decryptedFiles = await decryptZip(
+          window.encryptedZipSave,
+          symmKey
         );
+        const decryptedString = await decryptedFiles["string.txt"].async(
+          "text"
+        );
+        console.log("decrypt: ", decryptedString);
+
         document.getElementById("verificationStatus").innerText =
-          "Verified!  Response is \n" + JSON.stringify(data, null, 2);
-        document.getElementById("verificationNote").style = "display: block;";
+          "Decrypting, please wait...";
+        // const data = await fetch("/verify?jwt=" + window.jwt).then(resp =>
+        //   resp.json()
+        // );
+        document.getElementById("verificationStatus").innerText =
+          "Verified!  Response is \n" + response;
+
+        // document.getElementById("verificationNote").style = "display: block;";
       }
-    </script>
+    </script> -->
   </head>
 
   <body>
-    <script type="text/javascript" src="../litHandler.js"></script>
-
     <h1>
-      LIT + Ceramic Example
+      LIT Protocol /+ Ceramic Network Integration
     </h1>
 
-    <h2>Step 1: Mint an NFT</h2>
-    Chain to mint on:
+    <h2>Step 1: Encrypt your file with LIT!</h2>
+    Chain to encrypt on:
     <select id="selectedChain">
-      <option value="fantom" selected>Fantom</option>
-      <option value="ethereum">Ethereum</option>
+      <option value="ethereum" selected>Ethereum</option>
+      <option value="fantom">Fantom</option>
       <option value="polygon">Polygon</option>
       <option value="xdai">xDai</option>
     </select>
     <br />
     <br />
-    <button onclick="mintNft()">Mint Me Blazer</button>
+    <button onclick="encryptWithLit()">Encrypt!</button>
     <br />
     <br />
     <div id="mintingStatus"></div>
 
-    <h2>Step 2: Provision access to a resource</h2>
-    <button onclick="provisionAccess()">Provision access</button>
+    <h2>Step 2: Write on Ceramic!</h2>
+    <button type="button" onclick="ping">
+      Send to Ceramic Network
+    </button>
     <br />
     <br />
     <div id="provisioningStatus"></div>
 
-    <h2>Step 3: Request a JWT to authenticate the user</h2>
-    <button onclick="requestJwt()">Request JWT</button>
+    <h2>Step 3: Query from Ceramic!</h2>
+    <button onclick="query()">Query from Stream</button>
     <br />
     <br />
     <div id="requestingStatus"></div>
 
+    <h2>Step 4: Decrypt with Lit Protocol!</h2>
+    <button onclick="decryptWithLit()">Decrypt!</button>
     <br />
     <br />
     <pre id="verificationStatus"></pre>
     <br />
-    <br />
-
-    <br />
     <p id="verificationNote" style="display: none;">
-      The "verified" variable is a boolean that indicates whether or not the
-      signature verified properly. Note: YOU MUST CHECK THE PAYLOAD AGAINST THE
-      CONTENT YOU ARE PROTECTING. This means you need to look at
-      "payload.baseUrl" which should match the hostname of the server, and you
-      must also look at "payload.path" which should match the path being
-      accessed. You should also check that payload.orgId, payload.role, and
-      payload.extraData are empty. If these do not match what you're expecting,
-      you should reject the request.
+      Replace this with something relevant---the "verified" variable is a
+      boolean that indicates whether or not the signature verified properly.
     </p>
-
-    <br />
-    <br />
-    <h2>Step 5: Start a Ceramic Client</h2>
-    <h4>
-      This you'll have to do on your own by installing the JS HTTP client and
-      then spinning up by typing:
-      <code>ceramic daemon</code>
-    </h4>
-    <br />
-    <br />
-    <h2>Step 6: Secure a DID</h2>
-
-    <br />
-    <br />
-    <h2>Step 7: Encrypt a message</h2>
-
-    <br />
-    <br />
-    <h2>Step 8: Write</h2>
-
-    <br />
-    <br />
-    <h2>Step 9: Read it back to me</h2>
   </body>
 </html>

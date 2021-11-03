@@ -11,6 +11,12 @@ import { DID } from "dids";
 //   const stream = await ceramic.loadStream<TileDocument>(streamId)
 // };
 
+const ping => {
+  console.log("ping");
+  // alert("ping");
+  return "ping"
+}
+
 async function queryNoAuth() {
   // Create your node instance
   console.log("im awake..");
@@ -23,7 +29,7 @@ async function queryNoAuth() {
   };
   console.log(stream.length);
 }
-// queryNoAuth();
+queryNoAuth();
 
 function installCeramicClient() {
   const API_URL = "0.0.0.0:7007"; // "https://ceramic-clay.3boxlabs.com";
