@@ -11,10 +11,10 @@ import { DID } from "dids";
 //   const stream = await ceramic.loadStream<TileDocument>(streamId)
 // };
 
-const ping => {
+function ping() {
   console.log("ping");
   // alert("ping");
-  return "ping"
+  return "ping";
 }
 
 async function queryNoAuth() {
