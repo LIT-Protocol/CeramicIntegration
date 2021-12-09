@@ -2,15 +2,21 @@
 
 <html>
   <head>
-    <title>LIT Protocol /+ Ceramic Network Integration</title>
-    <script type="module" onload="ping()" src="index.js"></script>
+    <script type="module" src="functions.js"></script>
+    <script type="module">
+      import { ping } from "./functions.js";
 
-    <!-- <script
+      // document.body.innerHTML = ping();
+    </script>
+
+    <title>LIT Protocol /+ Ceramic Network Integration</title>
+
+    <script
       onload="LitJsSdk.litJsSdkLoadedInALIT()"
       src="https://jscdn.litgateway.com/index.web.js"
-    ></script> -->
+    ></script>
 
-    <!-- <script>
+    <script>
       const client = new LitJsSdk.LitNodeClient();
       client.connect();
       window.litNodeClient = client;
@@ -255,13 +261,17 @@
 
         // document.getElementById("verificationNote").style = "display: block;";
       }
-    </script> -->
+    </script>
   </head>
 
   <body>
     <h1>
       LIT Protocol /+ Ceramic Network Integration
     </h1>
+    <button id="ping" type="button" style="display: inherit; margin: 20px auto">
+      Connect wallet
+    </button>
+    <input type="button" onclick="ping()" value="Display" />
 
     <h2>Step 1: Encrypt your file with LIT!</h2>
     Chain to encrypt on:

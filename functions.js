@@ -7,16 +7,16 @@ import { randomBytes } from "@stablelib/random";
 import KeyDidResolver from "key-did-resolver";
 import { DID } from "dids";
 
-// function queryNoAuth() {
-//   const stream = await ceramic.loadStream<TileDocument>(streamId)
-// };
+function queryNoAuth() {
+  const stream = await ceramic.loadStream<TileDocument>(streamId)
+};
 
-function ping() {
+export function ping() {
   console.log("ping");
   // alert("ping");
-  return "ping";
+  // return "ping";
 }
-
+ping();
 async function queryNoAuth() {
   // Create your node instance
   console.log("im awake..");
