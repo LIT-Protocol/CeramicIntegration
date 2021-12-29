@@ -1,18 +1,40 @@
 {
-  "name": "CeramicIntegration",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "@litelliott/lit-ceramic-integration",
+  "version": "1.1.0",
+  "description": "An integration of Lit Protocol with Ceramic Network",
   "license": "MIT",
-  "type": "module",
+  "repository": "itali43/lit-ceramic-integration",
+  "main": "index.js",
+  "keywords": [
+    "lit",
+    "ceramic",
+    "package",
+    "litelliott"
+  ],
+  "scripts": {
+    "build:docs": "documentation build integration.ts --parse-extension ts -f md -o documentation/integration.md --shallow && documentation build lit.ts --parse-extension ts -f md -o documentation/lit.md --shallow && documentation build ceramic.ts --parse-extension ts -f md -o documentation/ceramic.md --shallow && documentation build client.ts --parse-extension ts -f md -o documentation/client.md --shallow"
+  },
   "dependencies": {
-    "@3id/connect": "^0.2.5",
-    "@ceramicnetwork/cli": "^1.4.0",
-    "@ceramicnetwork/core": "^1.6.0",
-    "@ceramicnetwork/http-client": "^1.4.1",
-    "@ceramicnetwork/stream-tile": "^1.3.1",
-    "ipfs-core": "^0.11.1",
-    "key-did-provider-ed25519": "^1.1.0",
-    "lit-js-sdk": "^1.1.75",
-    "node-static": "^0.7.11"
+    "@3id/connect": "^0.1.6",
+    "@ceramicnetwork/3id-did-resolver": "^1.2.7",
+    "@ceramicnetwork/common": "^1.1.0",
+    "@ceramicnetwork/http-client": "^1.0.7",
+    "@ceramicstudio/idx": "^0.12.1",
+    "@ceramicstudio/idx-tools": "^0.11.0",
+    "@walletconnect/web3-provider": "^1.3.3",
+    "authereum": "^0.1.0",
+    "dag-jose": "^0.3.0",
+    "dids": "^2.1.0",
+    "documentation": "^13.2.5",
+    "fortmatic": "^2.2.1",
+    "http-server": "^14.0.0",
+    "key-did-resolver": "^1.2.0",
+    "lit-js-sdk": "^1.1.80",
+    "multiformats": "~4.6.1",
+    "skynet-js": "^4.0.5-beta",
+    "typescript": "^4.5.4",
+    "uint8arrays": "^3.0.0",
+    "web3modal": "^1.9.3",
+    "webpack-dev-server": "^4.5.0"
   }
 }
