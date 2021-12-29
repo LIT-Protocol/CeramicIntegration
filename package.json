@@ -3,7 +3,7 @@
   "version": "1.2.0",
   "description": "An integration of Lit Protocol with Ceramic Network",
   "license": "MIT",
-  "repository": "itali43/lit-ceramic-integration",
+  "repository": "LIT-Protocol/CeramicIntegration",
   "main": "index.js",
   "keywords": [
     "lit",
