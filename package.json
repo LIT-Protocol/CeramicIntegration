@@ -1,6 +1,6 @@
 {
   "name": "lit-ceramic-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An integration of Lit Protocol with Ceramic Network",
   "license": "MIT",
   "repository": "LIT-Protocol/CeramicIntegration",
