@@ -6,6 +6,8 @@
 
 ### How to Implement
 
+**See an Example Implementation in the [CeramicIntegrationPlayground](https://github.com/LIT-Protocol/CeramicIntegrationExample)**
+
 The following are steps to implement. In addition, we also have a wonderful folder called 'documentation' in the root directory of this repo that has markdown files with explanations of all the important methods.
 
 1. Install as show above
