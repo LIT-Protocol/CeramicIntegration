@@ -1,18 +1,8 @@
-# Notes
+# General Notes From Building with Ceramic
 
 ### Node
 
-For ceramic it seems you're required to run a client, which can either be based on your own node (using their "core" client Implementation) or using their JS HTTP client. Core requires setting up a IPFS node and a dag-jose apparently, so for now if I need to do this, and it looks like I do, I'm going with JS HTTP.
-
-### What a
-
-#
-
-#
-
-#
-
----
+For ceramic you're required to run a client, which can either be based on your own node (using their "core" client Implementation) or using their JS HTTP client. Core requires setting up a IPFS node and a dag-jose apparently, so for now if I need to do this, and it looks like I do, I'm going with JS HTTP.
 
 # Glossary
 
@@ -81,19 +71,13 @@ A StreamType that stores a cryptographically verifiable proof that links a block
 
 Lifecycle of a Stream, and more, very useful: https://github.com/ceramicnetwork/ceramic/blob/master/SPECIFICATION.md
 
-#
-
-#
-
-#
-
-# Useless Notes
+# Completely Random Notes
 
 Keeping streams isn't universally required, so I think this may suffer the same problem as torrents, in that if something is considered forbidden content a govt authority can censor. I think that's probably by design but I found it interesting.
 
-Arweave doesn't seem to be implemented yet. The denote it as "archiving" (clever distinction, Arweave is forever if the price is right) as opposed to what they are currently doing with IPFS/Filecoin which is more like pay-as-you-go storage.
+Arweave isn't implemented yet. The denote it as "archiving" (clever distinction, Arweave is forever if the price is right) as opposed to what they are currently doing with IPFS/Filecoin which is more like pay-as-you-go storage.
 
-##### Data withholding attacks..
+##### Of interest: data withholding attacks..
 
 They act like this isn't a big deal, but if I get someone's private keys and do this to them unknowningly I control their stream history. Imagine losing years worth of data due poor key management!
 
