@@ -1,5 +1,15 @@
 # Lit Ceramic Integration Module
 
+## Why?
+
+Ceramic is amazing, but doesn't have read permissions on data. Everything is public. With the Lit Protocol, you can specify who is able to decrypt and therefore read data based on on-chain conditions. This module allows you to integrate Ceramic with Lit.
+
+For example, you could use this as your DB for a website for a DAO you're a apart of, and specify that only DAO members can decrypt the data stored in Ceramic.
+
+## Motivation
+
+The goal of this project is to provide a decentralized fully serverless database solution with the ability to easily share private data. Ceramic is a great solution for the decentralized serverless database, but it doesn't have the ability to share private data on it's own. This module will allow you to share private data on Ceramic with the ability to specify who can decrypt the data.
+
 ## Installation
 
 `yarn add lit-ceramic-integration`
@@ -9,7 +19,7 @@
 1. Install as shown above
 2. Import into your TS/JS where you'd like to use it. This is a typescript package as an FYI.
 
-`import { Integration } from 'lit-ceramic-integration'`
+
 
 Javascript requires minor amounts of extra work to use a Typescript project, [here's an example](https://www.freecodecamp.org/news/how-to-add-typescript-to-a-javascript-project/) of what that can look like, but there are plenty of good resources for this online.
 
@@ -80,24 +90,24 @@ If you'd like ping the ceramic test net for a streamID that already works, use t
 Manually, you can start the `ceramic daemon` and then in another terminal window enter `ceramic show kjzl6cwe1jw14afliaj4m2vku3uy67ulyxj0erv5jgqz6k6cw0vtz27mf76m4ww`
 It should return the following:
 
+```
 {
-"chain": "ethereum",
-"symKey": "gvKsVkBRS7d+baui7nJgf3b/G+8df1KNEYhVZ6kF97H8I0NROsKPd7BXds4jWbMK+rqlDa3Y2st4XQIHLqXLZVWJn5EZLNsYgEuZZPFaNbw7CGswjdSeMUK6WF8vAXS1+LbYrbal3GbTA+1JZ7Rc/xCKmpqM2Dvz2Btj8dhY3AUAAAAAAAAAIKnDOtW9nceKILkczbD1YjUyC3on3kTXKSJNyq2y4dmxy42BUuU6z+iI4WWZ2wmUhg==",
-"encryptedZip": "rAf1RDm7nf4STWdhPS4gYWrlNHS9HcAUO/w0E86xcEC5zdLIF0TlGKVqeCowGNKtB8ecz/zxFp/8Ra+js4WOwK/yATFi5AxoCu2s5653rDZr9AjIQ8ii4pKeeRm+qEnL3bzXtmJT+5XiixTz5zgxhGgOccYMdDeOjJUKf6okOFBwVLCrUHyPd4MdbE+SLA8/hnUh7EnTLykF+3GJnD0cyQ==",
-"accessControlConditions": [
-{
-"chain": "ethereum",
-"method": "eth_getBalance",
-"parameters": [
-":userAddress",
-"latest"
-],
-"contractAddress": "0x20598860da775f63ae75e1cd2ce0d462b8cee4c7",
-"returnValueTest": {
-"value": "10000000000000",
-"comparator": ">="
-},
-"standardContractType": ""
+    "chain": "ethereum",
+    "symKey": "gvKsVkBRS7d+baui7nJgf3b/G+8df1KNEYhVZ6kF97H8I0NROsKPd7BXds4jWbMK+rqlDa3Y2st4XQIHLqXLZVWJn5EZLNsYgEuZZPFaNbw7CGswjdSeMUK6WF8vAXS1+LbYrbal3GbTA+1JZ7Rc/xCKmpqM2Dvz2Btj8dhY3AUAAAAAAAAAIKnDOtW9nceKILkczbD1YjUyC3on3kTXKSJNyq2y4dmxy42BUuU6z+iI4WWZ2wmUhg==",
+    "encryptedZip": "rAf1RDm7nf4STWdhPS4gYWrlNHS9HcAUO/w0E86xcEC5zdLIF0TlGKVqeCowGNKtB8ecz/zxFp/8Ra+js4WOwK/yATFi5AxoCu2s5653rDZr9AjIQ8ii4pKeeRm+qEnL3bzXtmJT+5XiixTz5zgxhGgOccYMdDeOjJUKf6okOFBwVLCrUHyPd4MdbE+SLA8/hnUh7EnTLykF+3GJnD0cyQ==",
+    "accessControlConditions": [{
+        "chain": "ethereum",
+        "method": "eth_getBalance",
+        "parameters": [
+            ":userAddress",
+            "latest"
+        ],
+        "contractAddress": "0x20598860da775f63ae75e1cd2ce0d462b8cee4c7",
+        "returnValueTest": {
+            "value": "10000000000000",
+            "comparator": ">="
+        },
+        "standardContractType": ""
+    }]
 }
-]
-}
+```
