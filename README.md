@@ -76,7 +76,7 @@ You can find API docs [here](documentation/integration.md)
 
 ## More info
 
-Want to do something more complex with the Lit Protocol or Ceramic? Check out the Lit JS SDK docs [here](https://developer.litprotocol.com/docs/SDK/intro) and the Ceramic docs [here](https://developers.ceramic.network/learn/welcome/)
+Want to do something more complex with the Lit Protocol or Ceramic? Check out the Lit JS SDK docs https://developer.litprotocol.com/docs/SDK/intro and the Ceramic docs https://developers.ceramic.network/learn/welcome/
 
 ### To Do / Desired Future Features
 
