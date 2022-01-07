@@ -51,36 +51,22 @@ export function decodeb64(b64String: any) {
  */
 export async function _encryptWithLit(
   auth: any[],
-  aStringThatYouWishToEncrypt: String
+  aStringThatYouWishToEncrypt: String,
+  accessControlConditions: Array<Object>
 ): Promise<Array<any>> {
   const chain = "ethereum";
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
-    chain: chain
+    chain: chain,
   });
   const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
     aStringThatYouWishToEncrypt
   );
 
-  // currently only the maker of the streamID/data has access to it thereafter
-  const accessControlConditions = [
-    {
-      contractAddress: auth[2],
-      standardContractType: "",
-      chain: chain,
-      method: "eth_getBalance",
-      parameters: [":userAddress", "latest"],
-      returnValueTest: {
-        comparator: ">=",
-        value: "10000000000000"
-      }
-    }
-  ];
-
   const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
     accessControlConditions,
     symmetricKey,
     authSig: authSig,
-    chain
+    chain,
   });
 
   const encryptedZipBase64 = await blobToBase64(encryptedZip);
@@ -90,7 +76,7 @@ export async function _encryptWithLit(
     encryptedZipBase64,
     encryptedSymmetricKeyBase64,
     accessControlConditions,
-    chain
+    chain,
   ];
 }
 
@@ -109,7 +95,7 @@ export async function _decryptWithLit(
   chain: string
 ): Promise<String> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
-    chain: chain
+    chain: chain,
   });
   // encrypted blob, sym key
   console.log("encryptedSymKey", encryptedSymmKey);
@@ -120,7 +106,7 @@ export async function _decryptWithLit(
     accessControlConditions,
     toDecrypt,
     chain,
-    authSig
+    authSig,
   });
   console.log("decryptedSymKey", decryptedSymmKey);
 

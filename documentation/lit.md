@@ -58,6 +58,7 @@ non-permissioned eyes seeing what the data is
 
 *   `auth` **[blob][13]** authentication from wallet
 *   `aStringThatYouWishToEncrypt` **[String][12]** the clear text you'd like encrypted
+*   `accessControlConditions` **[Array][15]<[Object][16]>** 
 
 Returns **[Promise][14]<[Array][15]\<any>>** returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
 
@@ -103,3 +104,5 @@ Returns **[Promise][14]<[string][12]>** promise with the decrypted string
 [14]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
