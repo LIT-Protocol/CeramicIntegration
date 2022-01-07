@@ -12,7 +12,7 @@ The goal of this project is to provide a decentralized fully serverless database
 
 ## Installation
 
-`yarn add lit-ceramic-integration`
+`yarn add lit-ceramic-sdk`
 
 ## Usage
 
