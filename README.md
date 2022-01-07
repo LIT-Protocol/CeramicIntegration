@@ -21,6 +21,8 @@ The goal of this project is to provide a decentralized fully serverless database
 
 Javascript requires minor amounts of extra work to use a Typescript project, [here's an example](https://www.freecodecamp.org/news/how-to-add-typescript-to-a-javascript-project/) of what that can look like, but there are plenty of good resources for this online.
 
+`import { Integration } from 'lit-ceramic-sdk'`
+
 3. Create a new Integration that runs upon startup and is accessible where you intend to do encryptAndWrite or readAndDecrypt operations:
    `let litCeramicIntegration = new Integration("https://ceramic-clay.3boxlabs.com")`
 4. Start the Lit Client when the DOM is loaded, or early on in the lifecycle:
