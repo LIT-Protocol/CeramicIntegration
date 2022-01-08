@@ -76,6 +76,10 @@ This uses an example streamID and prints the secret value to the console.
 
 You can find API docs [here](documentation/integration.md)
 
+## Example
+
+You can find an example implementation here: https://github.com/LIT-Protocol/CeramicIntegrationExample
+
 ## More info
 
 Want to do something more complex with the Lit Protocol or Ceramic? Check out the Lit JS SDK docs https://developer.litprotocol.com/docs/SDK/intro and the Ceramic docs https://developers.ceramic.network/learn/welcome/
