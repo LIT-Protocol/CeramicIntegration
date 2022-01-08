@@ -12,7 +12,7 @@
     "litelliott"
   ],
   "scripts": {
-    "build:docs": "documentation build integration.ts --parse-extension ts -f md -o documentation/integration.md --shallow && documentation build lit.ts --parse-extension ts -f md -o documentation/lit.md --shallow && documentation build ceramic.ts --parse-extension ts -f md -o documentation/ceramic.md --shallow && documentation build client.ts --parse-extension ts -f md -o documentation/client.md --shallow"
+    "build:docs": "documentation build integration.ts --parse-extension ts -f md -o documentation/integration.md --shallow && documentation build lit.ts --parse-extension ts -f md -o documentation/lit.md --shallow && documentation build ceramic.ts --parse-extension ts -f md -o documentation/ceramic.md --shallow && documentation build client.ts --parse-extension ts -f md -o documentation/client.md --shallow && doctoc README.md"
   },
   "dependencies": {
     "@3id/connect": "^0.1.6",

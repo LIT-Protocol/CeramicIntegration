@@ -1,3 +1,21 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Lit Ceramic Integration Module](#lit-ceramic-integration-module)
+  - [Why?](#why)
+  - [Motivation](#motivation)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [API Docs](#api-docs)
+  - [Example](#example)
+  - [More info](#more-info)
+    - [To Do / Desired Future Features](#to-do--desired-future-features)
+    - [Test Data](#test-data)
+      - [Testing Ceramic Read Function](#testing-ceramic-read-function)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Lit Ceramic Integration Module
 
 ## Why?
