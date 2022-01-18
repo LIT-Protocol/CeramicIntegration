@@ -2,16 +2,16 @@
 
 ### Table of Contents
 
-*   [\_createCeramic][1]
-    *   [Parameters][2]
-*   [\_authenticateCeramic][3]
-    *   [Parameters][4]
-*   [\_writeCeramic][5]
-    *   [Parameters][6]
-*   [\_readCeramic][7]
-    *   [Parameters][8]
-*   [\_decodeFromB64][9]
-    *   [Parameters][10]
+- [\_createCeramic][1]
+  - [Parameters][2]
+- [\_authenticateCeramic][3]
+  - [Parameters][4]
+- [\_writeCeramic][5]
+  - [Parameters][6]
+- [\_readCeramic][7]
+  - [Parameters][8]
+- [\_decodeFromB64][9]
+  - [Parameters][10]
 
 ## \_createCeramic
 
@@ -20,7 +20,7 @@ Creates a CeramicApi object on the ceramic testnet
 
 ### Parameters
 
-*   `ceramicNodeUrl` **[string][11]** 
+- `ceramicNodeUrl` **[string][11]**
 
 Returns **[Promise][12]\<CeramicApi>** ceramicPromise pass in \_createCeramic() promise
 
@@ -29,76 +29,60 @@ Returns **[Promise][12]\<CeramicApi>** ceramicPromise pass in \_createCeramic() 
 Authenticate for Lit + Ceramic.
 This uses a wallet provider to interact with the user's wallet
 Once the user has authorized, the address is retrieved and the
-decentralized identity is created.  An IDX is also created for
+decentralized identity is created. An IDX is also created for
 convenience.
 
 ### Parameters
 
-*   `ceramicPromise` **[Promise][12]\<CeramicApi>** pass in \_createCeramic() promise
+- `ceramicPromise` **[Promise][12]\<CeramicApi>** pass in \_createCeramic() promise
 
 Returns **[Promise][12]<[Array][13]\<any>>** Promise of ceramic IDX ID, ceramic object
 and user's ETH Address
 
 ## \_writeCeramic
 
-Write to Ceramic.  This function takes in an auth and what one would
+Write to Ceramic. This function takes in an auth and what one would
 like written and then sends it to a ceramic node in the proper format
 
 ### Parameters
 
-*   `auth` **[Array][13]\<any>** is the authentication passed via the persons wallet
-*   `toBeWritten` **[Array][13]\<any>** 
-*   `array` **[Array][13]\<any>** of encrypted key, symkey, accessControlConditions, and chain
+- `auth` **[Array][13]\<any>** is the authentication passed via the persons wallet
+- `toBeWritten` **[Array][13]\<any>**
+- `array` **[Array][13]\<any>** of encrypted key, symkey, accessControlConditions, and chain
 
 Returns **[Promise][12]<[string][11]>** promise with the ceramic streamID, can be used to look up data
 
 ## \_readCeramic
 
-Write to Ceramic.  This function takes in an auth and what one would
-like written and then sends it to a ceramic node in the proper format
-
-for testing this function and understanding ceramic's read functionality better
-see our README, Test Data section.  Also the Ceramic docs on Read Functionality!
+Read to Ceramic. This function takes in an auth and the streamID of the desired data and then sends it to a ceramic node in the proper format getting back a promised string of whatever was stored
 
 ### Parameters
 
-*   `auth` **[Array][13]\<any>** is the authentication passed via the user's wallet
-*   `streamId` **[String][11]** ID hash of the stream
+- `auth` **[Array][13]\<any>** is the authentication passed via the user's wallet
+- `streamId` **[String][11]** ID hash of the stream
 
 Returns **[Promise][12]<[string][11]>** promise with the ceramic streamID's output
 
 ## \_decodeFromB64
 
-Decode info from base64.  Data is stored in base64 to make upload to ceramic
-more seamless.  This function decodes it so it can be decrypted with Lit in
+Decode info from base64. Data is stored in base64 to make upload to ceramic
+more seamless. This function decodes it so it can be decrypted with Lit in
 the next step in the read and decrypt process
 
 ### Parameters
 
-*   `response` **[string][11]** response received from ceramic streamID
+- `response` **[string][11]** response received from ceramic streamID
 
 [1]: #_createceramic
-
 [2]: #parameters
-
 [3]: #_authenticateceramic
-
 [4]: #parameters-1
-
 [5]: #_writeceramic
-
 [6]: #parameters-2
-
 [7]: #_readceramic
-
 [8]: #parameters-3
-
 [9]: #_decodefromb64
-
 [10]: #parameters-4
-
 [11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
 [12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
 [13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
