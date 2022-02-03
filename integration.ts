@@ -1,6 +1,7 @@
 // Don't forget to rebuild
 import { createIDX } from "./idx";
 import type { CeramicApi } from "@ceramicnetwork/common";
+import type { DID } from 'dids';
 import { _encryptWithLit, _decryptWithLit } from "./lit";
 import { _startLitClient } from "./client";
 import {
