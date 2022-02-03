@@ -4,7 +4,7 @@
   "description": "An integration of Lit Protocol with Ceramic Network",
   "license": "MIT",
   "repository": "LIT-Protocol/CeramicIntegration",
-  "main": "index.js",
+  "main": "dist/index.js",
   "keywords": [
     "lit",
     "ceramic",
@@ -12,7 +12,8 @@
     "litelliott"
   ],
   "scripts": {
-    "build:docs": "documentation build integration.ts --parse-extension ts -f md -o documentation/integration.md --shallow && documentation build lit.ts --parse-extension ts -f md -o documentation/lit.md --shallow && documentation build ceramic.ts --parse-extension ts -f md -o documentation/ceramic.md --shallow && documentation build client.ts --parse-extension ts -f md -o documentation/client.md --shallow && doctoc README.md"
+    "build": "tsc",
+    "build:docs": "documentation build src/integration.ts --parse-extension ts -f md -o documentation/integration.md --shallow && documentation build src/lit.ts --parse-extension ts -f md -o documentation/lit.md --shallow && documentation build src/ceramic.ts --parse-extension ts -f md -o documentation/ceramic.md --shallow && documentation build src/client.ts --parse-extension ts -f md -o documentation/client.md --shallow && doctoc README.md"
   },
   "dependencies": {
     "@3id/connect": "^0.1.6",
@@ -34,7 +35,6 @@
     "skynet-js": "^4.0.5-beta",
     "typescript": "^4.5.4",
     "uint8arrays": "^3.0.0",
-    "web3modal": "^1.9.3",
-    "webpack-dev-server": "^4.5.0"
+    "web3modal": "^1.9.3"
   }
 }
