@@ -105,16 +105,14 @@ exports.decodeb64 = decodeb64;
  * @param {String} aStringThatYouWishToEncrypt the clear text you'd like encrypted
  * @returns {Promise<Array<any>>} returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
  */
-function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditions) {
+function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditions, chain) {
     return __awaiter(this, void 0, void 0, function () {
-        var chain, authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
+        var authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0:
-                    chain = "ethereum";
-                    return [4 /*yield*/, LitJsSdk.checkAndSignAuthMessage({
-                            chain: chain,
-                        })];
+                case 0: return [4 /*yield*/, LitJsSdk.checkAndSignAuthMessage({
+                        chain: chain,
+                    })];
                 case 1:
                     authSig = _b.sent();
                     return [4 /*yield*/, LitJsSdk.zipAndEncryptString(aStringThatYouWishToEncrypt)];

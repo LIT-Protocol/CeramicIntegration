@@ -39,51 +39,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAddress = exports.getProvider = exports.web3Modal = exports.threeID = void 0;
-var web3_provider_1 = __importDefault(require("@walletconnect/web3-provider"));
+exports.getAddress = exports.getProvider = exports.threeID = void 0;
 var connect_1 = require("@3id/connect");
-var authereum_1 = __importDefault(require("authereum"));
-var fortmatic_1 = __importDefault(require("fortmatic"));
-var web3modal_1 = __importDefault(require("web3modal"));
+var lit_js_sdk_1 = __importDefault(require("lit-js-sdk"));
 // @ts-ignore
 exports.threeID = new connect_1.ThreeIdConnect();
-exports.web3Modal = new web3modal_1.default({
-    network: 'mainnet',
-    disableInjectedProvider: false,
-    cacheProvider: true,
-    providerOptions: {
-        walletconnect: {
-            package: web3_provider_1.default,
-            options: {
-                infuraId: 'e87f83fb85bf4aa09bdf6605ebe144b7',
-            },
-        },
-        fortmatic: {
-            package: fortmatic_1.default,
-            options: {
-                key: 'pk_live_EC842EEAC7F08995',
-            },
-        },
-        authereum: {
-            package: authereum_1.default,
-            options: {},
-        },
-    },
-});
 function getProvider() {
     return __awaiter(this, void 0, void 0, function () {
-        var ethProvider, addresses;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, exports.web3Modal.connect()];
+        var _a, web3, account;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, lit_js_sdk_1.default.connectWeb3()];
                 case 1:
-                    ethProvider = _a.sent();
-                    return [4 /*yield*/, ethProvider.enable()];
+                    _a = _b.sent(), web3 = _a.web3, account = _a.account;
+                    return [4 /*yield*/, exports.threeID.connect(new connect_1.EthereumAuthProvider(web3, account))];
                 case 2:
-                    addresses = _a.sent();
-                    return [4 /*yield*/, exports.threeID.connect(new connect_1.EthereumAuthProvider(ethProvider, addresses[0]))];
-                case 3:
-                    _a.sent();
+                    _b.sent();
                     return [2 /*return*/, exports.threeID.getDidProvider()];
             }
         });
@@ -92,17 +63,13 @@ function getProvider() {
 exports.getProvider = getProvider;
 function getAddress() {
     return __awaiter(this, void 0, void 0, function () {
-        var ethProvider, addresses, addr;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, exports.web3Modal.connect()];
+        var _a, web3, account;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, lit_js_sdk_1.default.connectWeb3()];
                 case 1:
-                    ethProvider = _a.sent();
-                    return [4 /*yield*/, ethProvider.enable()];
-                case 2:
-                    addresses = _a.sent();
-                    addr = addresses[0];
-                    return [2 /*return*/, addr];
+                    _a = _b.sent(), web3 = _a.web3, account = _a.account;
+                    return [2 /*return*/, account];
             }
         });
     });

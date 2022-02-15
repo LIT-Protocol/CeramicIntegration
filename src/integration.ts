@@ -1,7 +1,7 @@
 // Don't forget to rebuild
 import { createIDX } from "./idx";
 import type { CeramicApi } from "@ceramicnetwork/common";
-import type { DID } from 'dids';
+import type { DID } from "dids";
 import { _encryptWithLit, _decryptWithLit } from "./lit";
 import { _startLitClient } from "./client";
 import {
@@ -19,9 +19,14 @@ declare global {
 }
 export class Integration {
   ceramicPromise: Promise<CeramicApi>;
+  chain: String;
 
-  constructor(ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com") {
+  constructor(
+    ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com",
+    chain: String = "ethereum"
+  ) {
     this.ceramicPromise = _createCeramic(ceramicNodeUrl);
+    this.chain = chain;
   }
 
   startLitClient(window: Window) {
@@ -42,7 +47,12 @@ export class Integration {
   ): Promise<String> {
     try {
       const a = await _authenticateCeramic(this.ceramicPromise);
-      const en = await _encryptWithLit(a, toEncrypt, accessControlConditions);
+      const en = await _encryptWithLit(
+        a,
+        toEncrypt,
+        accessControlConditions,
+        this.chain
+      );
       const wr = await _writeCeramic(a, en);
       return wr;
     } catch (error) {

@@ -52,11 +52,11 @@ export function decodeb64(b64String: any) {
 export async function _encryptWithLit(
   auth: any[],
   aStringThatYouWishToEncrypt: String,
-  accessControlConditions: Array<Object>
+  accessControlConditions: Array<Object>,
+  chain: String
 ): Promise<Array<any>> {
-  const chain = "ethereum";
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
-    chain: chain,
+    chain,
   });
   const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
     aStringThatYouWishToEncrypt
@@ -95,7 +95,7 @@ export async function _decryptWithLit(
   chain: string
 ): Promise<String> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
-    chain: chain,
+    chain,
   });
   // encrypted blob, sym key
   console.log("encryptedSymKey", encryptedSymmKey);

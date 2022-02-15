@@ -8,8 +8,7 @@
   "keywords": [
     "lit",
     "ceramic",
-    "package",
-    "litelliott"
+    "package"
   ],
   "scripts": {
     "build": "tsc",
@@ -30,7 +29,7 @@
     "fortmatic": "^2.2.1",
     "http-server": "^14.0.0",
     "key-did-resolver": "^1.2.0",
-    "lit-js-sdk": "^1.1.80",
+    "lit-js-sdk": "^1.1.119",
     "multiformats": "~4.6.1",
     "skynet-js": "^4.0.5-beta",
     "typescript": "^4.5.4",

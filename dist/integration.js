@@ -41,9 +41,11 @@ var lit_1 = require("./lit");
 var client_1 = require("./client");
 var ceramic_1 = require("./ceramic");
 var Integration = /** @class */ (function () {
-    function Integration(ceramicNodeUrl) {
+    function Integration(ceramicNodeUrl, chain) {
         if (ceramicNodeUrl === void 0) { ceramicNodeUrl = "https://ceramic-clay.3boxlabs.com"; }
+        if (chain === void 0) { chain = "ethereum"; }
         this.ceramicPromise = (0, ceramic_1._createCeramic)(ceramicNodeUrl);
+        this.chain = chain;
     }
     Integration.prototype.startLitClient = function (window) {
         (0, client_1._startLitClient)(window);
@@ -66,7 +68,7 @@ var Integration = /** @class */ (function () {
                         return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
                     case 1:
                         a = _a.sent();
-                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(a, toEncrypt, accessControlConditions)];
+                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(a, toEncrypt, accessControlConditions, this.chain)];
                     case 2:
                         en = _a.sent();
                         return [4 /*yield*/, (0, ceramic_1._writeCeramic)(a, en)];
