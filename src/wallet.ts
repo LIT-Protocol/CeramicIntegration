@@ -1,9 +1,5 @@
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ThreeIdConnect, EthereumAuthProvider } from "@3id/connect";
-import Authereum from "authereum";
 import type { DIDProvider } from "dids";
-import Fortmatic from "fortmatic";
-import Web3Modal from "web3modal";
 import LitJsSdk from "lit-js-sdk";
 
 // @ts-ignore
