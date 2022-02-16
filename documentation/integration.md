@@ -16,6 +16,7 @@ whatever the module user inputs (as long as it is a string for now)
 
 *   `toEncrypt` **[String][5]** what the module user wants to encrypt and store on ceramic
 *   `accessControlConditions` **[Array][6]<[Object][7]>** the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: [https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples][8]
+*   `accessControlConditionType` **[String][5]** the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions (optional, default `"accessControlConditions"`)
 
 Returns **[Promise][9]<[String][5]>** A promise that resolves to a streamID for the encrypted data that's been stored
 

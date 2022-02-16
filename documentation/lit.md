@@ -59,6 +59,8 @@ non-permissioned eyes seeing what the data is
 *   `auth` **[blob][13]** authentication from wallet
 *   `aStringThatYouWishToEncrypt` **[String][12]** the clear text you'd like encrypted
 *   `accessControlConditions` **[Array][15]<[Object][16]>** 
+*   `chain` **[String][12]** 
+*   `accessControlConditionType` **[String][12]**  (optional, default `"accessControlConditions"`)
 
 Returns **[Promise][14]<[Array][15]\<any>>** returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
 
@@ -72,6 +74,7 @@ decrypt encrypted zip and symmetric key using the lit protocol
 *   `encryptedSymmKey` **[Uint8Array][11]** symmetric key
 *   `accessControlConditions` **[Uint8Array][11]** conditions that determine access
 *   `chain` **[string][12]** 
+*   `accessControlConditionType` **[String][12]**  (optional, default `"accessControlConditions"`)
 
 Returns **[Promise][14]<[string][12]>** promise with the decrypted string
 

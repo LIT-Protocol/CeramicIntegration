@@ -1,13 +1,12 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
-
 - [Lit Ceramic Integration Module](#lit-ceramic-integration-module)
   - [Why?](#why)
   - [Motivation](#motivation)
   - [Installation](#installation)
   - [Usage](#usage)
+  - [EVM Contract Conditions](#evm-contract-conditions)
   - [API Docs](#api-docs)
   - [Example](#example)
   - [More info](#more-info)
@@ -90,6 +89,17 @@ Note that the stringToEncrypt is the thing which we are encrypting in this examp
 ```
 
 This uses an example streamID and prints the secret value to the console.
+
+## EVM Contract Conditions
+
+If you're using EVM Contract conditions instead of access control conditions, make sure you pass the optional 3rd parameter to encryptAndWrite of 'evmContractConditions':
+
+```
+const stringToEncrypt = 'This is what we want to encrypt on Lit and then store on ceramic'
+const response = litCeramicIntegration
+   .encryptAndWrite(stringToEncrypt, evmContractConditions, 'evmContractConditions')
+   .then((streamID) => console.log(streamID))
+```
 
 ## API Docs
 
