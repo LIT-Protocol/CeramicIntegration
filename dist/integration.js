@@ -41,11 +41,12 @@ var lit_1 = require("./lit");
 var client_1 = require("./client");
 var ceramic_1 = require("./ceramic");
 var Integration = /** @class */ (function () {
-    function Integration(ceramicNodeUrl, chain) {
+    function Integration(ceramicNodeUrl, chainParam) {
         if (ceramicNodeUrl === void 0) { ceramicNodeUrl = "https://ceramic-clay.3boxlabs.com"; }
-        if (chain === void 0) { chain = "ethereum"; }
+        if (chainParam === void 0) { chainParam = "ethereum"; }
+        this.chain = chainParam;
+        console.log("setting chain to ", this.chain);
         this.ceramicPromise = (0, ceramic_1._createCeramic)(ceramicNodeUrl);
-        this.chain = chain;
     }
     Integration.prototype.startLitClient = function (window) {
         (0, client_1._startLitClient)(window);

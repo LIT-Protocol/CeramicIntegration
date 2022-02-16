@@ -23,10 +23,11 @@ export class Integration {
 
   constructor(
     ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com",
-    chain: String = "ethereum"
+    chainParam: String = "ethereum"
   ) {
+    this.chain = chainParam;
+    // console.log("setting chain to ", this.chain);
     this.ceramicPromise = _createCeramic(ceramicNodeUrl);
-    this.chain = chain;
   }
 
   startLitClient(window: Window) {

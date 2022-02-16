@@ -13,7 +13,7 @@ export async function getProvider(): Promise<DIDProvider> {
   // const ethProvider = await web3Modal.connect()
   // const addresses = await ethProvider.enable()
   const { web3, account } = await LitJsSdk.connectWeb3();
-  await threeID.connect(new EthereumAuthProvider(web3, account));
+  await threeID.connect(new EthereumAuthProvider(web3.provider, account));
   return threeID.getDidProvider();
 }
 

@@ -1,6 +1,7 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
 
 - [Lit Ceramic Integration Module](#lit-ceramic-integration-module)
   - [Why?](#why)
@@ -41,8 +42,8 @@ Javascript requires minor amounts of extra work to use a Typescript project, [he
 
 `import { Integration } from 'lit-ceramic-sdk'`
 
-3. Create a new Integration that runs upon startup and is accessible where you intend to do encryptAndWrite or readAndDecrypt operations:
-   `let litCeramicIntegration = new Integration("https://ceramic-clay.3boxlabs.com")`
+3. Create a new Integration that runs upon startup and is accessible where you intend to do encryptAndWrite or readAndDecrypt operations. Pass your Ceramic RPC URL and the chain you wish to use:
+   `let litCeramicIntegration = new Integration("https://ceramic-clay.3boxlabs.com", "ethereum")`
 4. Start the Lit Client when the DOM is loaded, or early on in the lifecycle:
    `litCeramicIntegration.startLitClient(window)`
 5. You'll need to define access control conditions for your data. This will govern who is able to decrypt and therefore read the data. The access control conditions variable should be an array of conditions and the user must satisify all of them (a boolean "AND" operation) to access the data. You can find examples of conditions here: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples

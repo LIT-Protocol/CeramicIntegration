@@ -52,7 +52,7 @@ function getProvider() {
                 case 0: return [4 /*yield*/, lit_js_sdk_1.default.connectWeb3()];
                 case 1:
                     _a = _b.sent(), web3 = _a.web3, account = _a.account;
-                    return [4 /*yield*/, exports.threeID.connect(new connect_1.EthereumAuthProvider(web3, account))];
+                    return [4 /*yield*/, exports.threeID.connect(new connect_1.EthereumAuthProvider(web3.provider, account))];
                 case 2:
                     _b.sent();
                     return [2 /*return*/, exports.threeID.getDidProvider()];
