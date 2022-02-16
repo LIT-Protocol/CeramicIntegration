@@ -45,7 +45,7 @@ var Integration = /** @class */ (function () {
         if (ceramicNodeUrl === void 0) { ceramicNodeUrl = "https://ceramic-clay.3boxlabs.com"; }
         if (chainParam === void 0) { chainParam = "ethereum"; }
         this.chain = chainParam;
-        console.log("setting chain to ", this.chain);
+        // console.log("setting chain to ", this.chain);
         this.ceramicPromise = (0, ceramic_1._createCeramic)(ceramicNodeUrl);
     }
     Integration.prototype.startLitClient = function (window) {
@@ -57,29 +57,37 @@ var Integration = /** @class */ (function () {
      *
      * @param {String} toEncrypt what the module user wants to encrypt and store on ceramic
      * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+     * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
      * @returns {Promise<String>} A promise that resolves to a streamID for the encrypted data that's been stored
      */
-    Integration.prototype.encryptAndWrite = function (toEncrypt, accessControlConditions) {
+    Integration.prototype.encryptAndWrite = function (toEncrypt, accessControlConditions, accessControlConditionType) {
+        if (accessControlConditionType === void 0) { accessControlConditionType = "accessControlConditions"; }
         return __awaiter(this, void 0, void 0, function () {
             var a, en, wr, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
-                        return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
+                        if (accessControlConditionType !== "accessControlConditions" &&
+                            accessControlConditionType !== "evmContractConditions") {
+                            throw new Error("accessControlConditionType must be accessControlConditions or evmContractConditions");
+                        }
+                        _a.label = 1;
                     case 1:
-                        a = _a.sent();
-                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(a, toEncrypt, accessControlConditions, this.chain)];
+                        _a.trys.push([1, 5, , 6]);
+                        return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
                     case 2:
+                        a = _a.sent();
+                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(a, toEncrypt, accessControlConditions, this.chain, accessControlConditionType)];
+                    case 3:
                         en = _a.sent();
                         return [4 /*yield*/, (0, ceramic_1._writeCeramic)(a, en)];
-                    case 3:
+                    case 4:
                         wr = _a.sent();
                         return [2 /*return*/, wr];
-                    case 4:
+                    case 5:
                         error_1 = _a.sent();
                         return [2 /*return*/, "something went wrong encrypting: ".concat(error_1)];
-                    case 5: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -106,7 +114,8 @@ var Integration = /** @class */ (function () {
                         return [4 /*yield*/, (0, ceramic_1._decodeFromB64)(en)];
                     case 3:
                         deco = _a.sent();
-                        return [4 /*yield*/, (0, lit_1._decryptWithLit)(deco[0], deco[1], deco[2], deco[3])];
+                        console.log("data from ceramic: ", deco);
+                        return [4 /*yield*/, (0, lit_1._decryptWithLit)(deco[0], deco[1], deco[2], deco[3], deco[4])];
                     case 4:
                         decrypt = _a.sent();
                         return [2 /*return*/, decrypt];

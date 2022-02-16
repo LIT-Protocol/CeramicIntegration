@@ -88,6 +88,7 @@ export async function _writeCeramic(
       symKey: toBeWritten[1],
       accessControlConditions: toBeWritten[2],
       chain: toBeWritten[3],
+      accessControlConditionType: toBeWritten[4],
     };
     const doc = await TileDocument.create(ceramic, toStore, {
       // controllers: [concatId],
@@ -145,7 +146,15 @@ export async function _decodeFromB64(response: string) {
     const accessControlConditions = response["accessControlConditions"];
     // @ts-ignore
     const chain = response["chain"];
-    return [deZip, deSym, accessControlConditions, chain];
+    // @ts-ignore
+    const accessControlConditionType = response["accessControlConditionType"];
+    return [
+      deZip,
+      deSym,
+      accessControlConditions,
+      chain,
+      accessControlConditionType,
+    ];
   } catch (error) {
     return "There was an error decrypting, is it possible you inputted the wrong streamID?";
   }

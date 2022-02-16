@@ -53,7 +53,8 @@ export async function _encryptWithLit(
   auth: any[],
   aStringThatYouWishToEncrypt: String,
   accessControlConditions: Array<Object>,
-  chain: String
+  chain: String,
+  accessControlConditionType: String = "accessControlConditions"
 ): Promise<Array<any>> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain,
@@ -62,13 +63,27 @@ export async function _encryptWithLit(
     aStringThatYouWishToEncrypt
   );
 
-  const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
-    accessControlConditions,
-    symmetricKey,
-    authSig: authSig,
-    chain,
-  });
+  let encryptedSymmetricKey;
 
+  if (accessControlConditionType === "accessControlConditions") {
+    encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
+      accessControlConditions,
+      symmetricKey,
+      authSig: authSig,
+      chain,
+    });
+  } else if (accessControlConditionType === "evmContractConditions") {
+    encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
+      evmContractConditions: accessControlConditions,
+      symmetricKey,
+      authSig: authSig,
+      chain,
+    });
+  } else {
+    throw new Error(
+      "accessControlConditionType must be accessControlConditions or evmContractConditions"
+    );
+  }
   const encryptedZipBase64 = await blobToBase64(encryptedZip);
   const encryptedSymmetricKeyBase64 = encodeb64(encryptedSymmetricKey);
 
@@ -77,6 +92,7 @@ export async function _encryptWithLit(
     encryptedSymmetricKeyBase64,
     accessControlConditions,
     chain,
+    accessControlConditionType,
   ];
 }
 
@@ -92,7 +108,8 @@ export async function _decryptWithLit(
   encryptedZip: Uint8Array,
   encryptedSymmKey: Uint8Array,
   accessControlConditions: Array<any>,
-  chain: string
+  chain: string,
+  accessControlConditionType: String = "accessControlConditions"
 ): Promise<String> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain,
@@ -102,12 +119,22 @@ export async function _decryptWithLit(
   const toDecrypt = uint8ArrayToString(encryptedSymmKey, "base16");
   console.log("toDecrypt", toDecrypt);
   // decrypt the symmetric key
-  const decryptedSymmKey = await window.litNodeClient.getEncryptionKey({
-    accessControlConditions,
-    toDecrypt,
-    chain,
-    authSig,
-  });
+  let decryptedSymmKey;
+  if (accessControlConditionType === "accessControlConditions") {
+    decryptedSymmKey = await window.litNodeClient.getEncryptionKey({
+      accessControlConditions,
+      toDecrypt,
+      chain,
+      authSig,
+    });
+  } else if (accessControlConditionType === "evmContractConditions") {
+    decryptedSymmKey = await window.litNodeClient.getEncryptionKey({
+      evmContractConditions: accessControlConditions,
+      toDecrypt,
+      chain,
+      authSig,
+    });
+  }
   console.log("decryptedSymKey", decryptedSymmKey);
 
   // decrypt the files

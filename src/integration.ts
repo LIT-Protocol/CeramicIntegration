@@ -40,19 +40,30 @@ export class Integration {
    *
    * @param {String} toEncrypt what the module user wants to encrypt and store on ceramic
    * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+   * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
    * @returns {Promise<String>} A promise that resolves to a streamID for the encrypted data that's been stored
    */
   async encryptAndWrite(
     toEncrypt: String,
-    accessControlConditions: Array<Object>
+    accessControlConditions: Array<Object>,
+    accessControlConditionType: String = "accessControlConditions"
   ): Promise<String> {
+    if (
+      accessControlConditionType !== "accessControlConditions" &&
+      accessControlConditionType !== "evmContractConditions"
+    ) {
+      throw new Error(
+        "accessControlConditionType must be accessControlConditions or evmContractConditions"
+      );
+    }
     try {
       const a = await _authenticateCeramic(this.ceramicPromise);
       const en = await _encryptWithLit(
         a,
         toEncrypt,
         accessControlConditions,
-        this.chain
+        this.chain,
+        accessControlConditionType
       );
       const wr = await _writeCeramic(a, en);
       return wr;
@@ -75,8 +86,15 @@ export class Integration {
       const en = await _readCeramic(a, streamID);
       // decode data returned from ceramic
       const deco = await _decodeFromB64(en);
+      console.log("data from ceramic: ", deco);
       // decrypt data that's been decoded
-      const decrypt = await _decryptWithLit(deco[0], deco[1], deco[2], deco[3]);
+      const decrypt = await _decryptWithLit(
+        deco[0],
+        deco[1],
+        deco[2],
+        deco[3],
+        deco[4]
+      );
       return decrypt;
     } catch (error) {
       return `something went wrong decrypting: ${error} \n StreamID sent: ${streamID}`;

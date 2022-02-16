@@ -144,6 +144,7 @@ function _writeCeramic(auth, toBeWritten) {
                         symKey: toBeWritten[1],
                         accessControlConditions: toBeWritten[2],
                         chain: toBeWritten[3],
+                        accessControlConditionType: toBeWritten[4],
                     };
                     return [4 /*yield*/, stream_tile_1.TileDocument.create(ceramic, toStore, {
                             // controllers: [concatId],
@@ -197,7 +198,7 @@ exports._readCeramic = _readCeramic;
  */
 function _decodeFromB64(response) {
     return __awaiter(this, void 0, void 0, function () {
-        var enZip, deZip, enSym, deSym, accessControlConditions, chain;
+        var enZip, deZip, enSym, deSym, accessControlConditions, chain, accessControlConditionType;
         return __generator(this, function (_a) {
             // data is encoded in base64, decode
             // const jason = JSON.stringify(response);
@@ -208,7 +209,14 @@ function _decodeFromB64(response) {
                 deSym = (0, lit_1.decodeb64)(enSym);
                 accessControlConditions = response["accessControlConditions"];
                 chain = response["chain"];
-                return [2 /*return*/, [deZip, deSym, accessControlConditions, chain]];
+                accessControlConditionType = response["accessControlConditionType"];
+                return [2 /*return*/, [
+                        deZip,
+                        deSym,
+                        accessControlConditions,
+                        chain,
+                        accessControlConditionType,
+                    ]];
             }
             catch (error) {
                 return [2 /*return*/, "There was an error decrypting, is it possible you inputted the wrong streamID?"];

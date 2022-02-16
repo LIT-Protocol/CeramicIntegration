@@ -105,7 +105,8 @@ exports.decodeb64 = decodeb64;
  * @param {String} aStringThatYouWishToEncrypt the clear text you'd like encrypted
  * @returns {Promise<Array<any>>} returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
  */
-function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditions, chain) {
+function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditions, chain, accessControlConditionType) {
+    if (accessControlConditionType === void 0) { accessControlConditionType = "accessControlConditions"; }
     return __awaiter(this, void 0, void 0, function () {
         var authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
         return __generator(this, function (_b) {
@@ -118,6 +119,7 @@ function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditi
                     return [4 /*yield*/, LitJsSdk.zipAndEncryptString(aStringThatYouWishToEncrypt)];
                 case 2:
                     _a = _b.sent(), encryptedZip = _a.encryptedZip, symmetricKey = _a.symmetricKey;
+                    if (!(accessControlConditionType === "accessControlConditions")) return [3 /*break*/, 4];
                     return [4 /*yield*/, window.litNodeClient.saveEncryptionKey({
                             accessControlConditions: accessControlConditions,
                             symmetricKey: symmetricKey,
@@ -126,8 +128,21 @@ function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditi
                         })];
                 case 3:
                     encryptedSymmetricKey = _b.sent();
-                    return [4 /*yield*/, blobToBase64(encryptedZip)];
+                    return [3 /*break*/, 7];
                 case 4:
+                    if (!(accessControlConditionType === "evmContractConditions")) return [3 /*break*/, 6];
+                    return [4 /*yield*/, window.litNodeClient.saveEncryptionKey({
+                            evmContractConditions: accessControlConditions,
+                            symmetricKey: symmetricKey,
+                            authSig: authSig,
+                            chain: chain,
+                        })];
+                case 5:
+                    encryptedSymmetricKey = _b.sent();
+                    return [3 /*break*/, 7];
+                case 6: throw new Error("accessControlConditionType must be accessControlConditions or evmContractConditions");
+                case 7: return [4 /*yield*/, blobToBase64(encryptedZip)];
+                case 8:
                     encryptedZipBase64 = _b.sent();
                     encryptedSymmetricKeyBase64 = encodeb64(encryptedSymmetricKey);
                     return [2 /*return*/, [
@@ -135,6 +150,7 @@ function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditi
                             encryptedSymmetricKeyBase64,
                             accessControlConditions,
                             chain,
+                            accessControlConditionType,
                         ]];
             }
         });
@@ -148,7 +164,8 @@ exports._encryptWithLit = _encryptWithLit;
  * @param {Uint8Array} accessControlConditions conditions that determine access
  * @returns {Promise<string>} promise with the decrypted string
  */
-function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions, chain) {
+function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions, chain, accessControlConditionType) {
+    if (accessControlConditionType === void 0) { accessControlConditionType = "accessControlConditions"; }
     return __awaiter(this, void 0, void 0, function () {
         var authSig, toDecrypt, decryptedSymmKey, decryptedFiles, decryptedString;
         return __generator(this, function (_a) {
@@ -162,6 +179,7 @@ function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions
                     console.log("encryptedSymKey", encryptedSymmKey);
                     toDecrypt = (0, to_string_1.toString)(encryptedSymmKey, "base16");
                     console.log("toDecrypt", toDecrypt);
+                    if (!(accessControlConditionType === "accessControlConditions")) return [3 /*break*/, 3];
                     return [4 /*yield*/, window.litNodeClient.getEncryptionKey({
                             accessControlConditions: accessControlConditions,
                             toDecrypt: toDecrypt,
@@ -170,12 +188,25 @@ function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions
                         })];
                 case 2:
                     decryptedSymmKey = _a.sent();
+                    return [3 /*break*/, 5];
+                case 3:
+                    if (!(accessControlConditionType === "evmContractConditions")) return [3 /*break*/, 5];
+                    return [4 /*yield*/, window.litNodeClient.getEncryptionKey({
+                            evmContractConditions: accessControlConditions,
+                            toDecrypt: toDecrypt,
+                            chain: chain,
+                            authSig: authSig,
+                        })];
+                case 4:
+                    decryptedSymmKey = _a.sent();
+                    _a.label = 5;
+                case 5:
                     console.log("decryptedSymKey", decryptedSymmKey);
                     return [4 /*yield*/, LitJsSdk.decryptZip(new Blob([encryptedZip]), decryptedSymmKey)];
-                case 3:
+                case 6:
                     decryptedFiles = _a.sent();
                     return [4 /*yield*/, decryptedFiles["string.txt"].async("text")];
-                case 4:
+                case 7:
                     decryptedString = _a.sent();
                     return [2 /*return*/, decryptedString];
             }
