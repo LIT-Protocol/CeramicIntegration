@@ -8,7 +8,7 @@ import KeyDidResolver from "key-did-resolver";
 import { createIDX } from "./idx";
 import { getProvider, getAddress } from "./wallet";
 import { ResolverRegistry } from "did-resolver";
-import { decodeb64 } from "./lit";
+import { decodeb64, encodeb64, blobToBase64 } from "./lit";
 
 declare global {
   interface Window {
@@ -95,6 +95,38 @@ export async function _writeCeramic(
       family: "doc family",
     });
     return doc.id.toString();
+  } else {
+    console.error("Failed to authenticate in ceramic WRITE");
+    return "error";
+  }
+}
+
+export async function _updateCeramic(
+  auth: any[],
+  streamId: String,
+  newContent: any[]
+): Promise<String> {
+  if (auth) {
+    const ceramic = auth[1];
+    const toStore = {
+      encryptedZip: encodeb64(newContent[0]),
+      symKey: encodeb64(newContent[1]),
+      accessControlConditions: newContent[2],
+      chain: newContent[3],
+      accessControlConditionType: newContent[4],
+    };
+
+    const doc = await TileDocument.load(ceramic, streamId.valueOf());
+
+    console.log(
+      "$$$kl - loaded previous ceramic data from StreamID: ",
+      streamId.valueOf()
+    );
+    console.log("$$$kl - previous doc: ", doc);
+    console.log("$$$kl - new access control conditions: ", newContent[1]);
+    await doc.update(toStore);
+    console.log("$$$kl - new doc: ", doc);
+    return "updated access conditions stored in Ceramic";
   } else {
     console.error("Failed to authenticate in ceramic WRITE");
     return "error";

@@ -19,7 +19,7 @@ export function encodeb64(uintarray: any) {
  * @param {Blob} blob what you'd like to encode
  * @returns {Promise<String>} returns a string of b64
  */
-function blobToBase64(blob: Blob) {
+export function blobToBase64(blob: Blob) {
   return new Promise((resolve, _) => {
     const reader = new FileReader();
     reader.onloadend = () =>
@@ -71,6 +71,7 @@ export async function _encryptWithLit(
       symmetricKey,
       authSig: authSig,
       chain,
+      permanant: false,
     });
   } else if (accessControlConditionType === "evmContractConditions") {
     encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
@@ -78,6 +79,7 @@ export async function _encryptWithLit(
       symmetricKey,
       authSig: authSig,
       chain,
+      permanant: false,
     });
   } else {
     throw new Error(
@@ -144,4 +146,52 @@ export async function _decryptWithLit(
   );
   const decryptedString = await decryptedFiles["string.txt"].async("text");
   return decryptedString;
+}
+
+// litCeramicIntegration.saveEncryptionKey({
+//   accessControlConditions: newAccessControlConditions,
+//   encryptedSymmetricKey,
+//   authSig,
+//   chain,
+//   permanant: false,
+// });
+export async function _saveEncryptionKey(
+  newAccessControlConditions: Array<any>,
+  encryptedSymmetricKey: Uint8Array,
+  chain: String
+): Promise<String> {
+  let authSig = await LitJsSdk.checkAndSignAuthMessage({
+    chain,
+  });
+  // encrypted blob, sym key
+  // console.log("$$$kl - encryptedSymKey entered: ", encryptedSymmetricKey);
+  // console.log("$$$kl - authSig: ", authSig);
+
+  // const newAccessControlConditions = [
+  //   {
+  //     contractAddress: '',
+  //     standardContractType: '',
+  //     chain: 'polygon',
+  //     method: '',
+  //     parameters: [
+  //       ':userAddress',
+  //     ],
+  //     returnValueTest: {
+  //       comparator: '=',
+  //       value: '0x0Db0448c95cad6D82695aC27022D20633C81b387'
+  //     },
+  //   },
+  // ]
+
+  const newEncryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey(
+    {
+      accessControlConditions: newAccessControlConditions,
+      encryptedSymmetricKey,
+      authSig,
+      chain,
+      permanant: false,
+    }
+  );
+  console.log("$$$kl - updated the access control condition");
+  return newEncryptedSymmetricKey;
 }

@@ -2,7 +2,7 @@
 import { createIDX } from "./idx";
 import type { CeramicApi } from "@ceramicnetwork/common";
 import type { DID } from "dids";
-import { _encryptWithLit, _decryptWithLit } from "./lit";
+import { _encryptWithLit, _decryptWithLit, _saveEncryptionKey } from "./lit";
 import { _startLitClient } from "./client";
 import {
   _authenticateCeramic,
@@ -10,6 +10,7 @@ import {
   _writeCeramic,
   _readCeramic,
   _decodeFromB64,
+  _updateCeramic,
 } from "./ceramic";
 
 declare global {
@@ -82,8 +83,10 @@ export class Integration {
     try {
       // makes certain DID/wallet has been auth'ed
       const a = await _authenticateCeramic(this.ceramicPromise);
+      console.log("$$$kl - authenticated RnD: ", a);
       // read data and retrieve encrypted data
       const en = await _readCeramic(a, streamID);
+      console.log("$$$kl - read from ceramic RnD: ", en);
       // decode data returned from ceramic
       const deco = await _decodeFromB64(en);
       console.log("data from ceramic: ", deco);
@@ -95,9 +98,81 @@ export class Integration {
         deco[3],
         deco[4]
       );
+
       return decrypt;
     } catch (error) {
-      return `something went wrong decrypting: ${error} \n StreamID sent: ${streamID}`;
+      console.log(
+        `something went wrong decrypting: ${error} \n StreamID sent: ${streamID}`
+      );
+      return "FALSE";
+    }
+  }
+
+  //accessControlConditions: Array<Object>
+  async updateAccess(
+    streamID: String,
+    newAccessControlConditions: Array<Object>
+  ): Promise<any> {
+    try {
+      console.log(
+        "$$$kl - trying to update permissions for streamID: ",
+        streamID
+      );
+      const a = await _authenticateCeramic(this.ceramicPromise);
+      console.log("$$$kl - authenticated: ", a);
+      const en = await _readCeramic(a, streamID);
+      console.log("$$$kl - read from ceramic: ", en);
+      // decode data returned from ceramic
+      const deco = await _decodeFromB64(en);
+      console.log("$$$kl - data from ceramic: ", deco);
+
+      const result = await _saveEncryptionKey(
+        newAccessControlConditions,
+        deco[1], //encryptedSymmetricKey
+        this.chain
+      );
+      console.log("$$$kl - update access result: ", result);
+
+      //deco mapping:
+      // encryptedZip: Uint8Array,
+      // encryptedSymmKey: Uint8Array,
+      // accessControlConditions: Array<any>,
+      // chain: string,
+      // accessControlConditionType: S
+
+      // [
+      //   encryptedZipBase64,
+      //   encryptedSymmetricKeyBase64,
+      //   accessControlConditions,
+      //   chain,
+      //   accessControlConditionType,
+      // ]
+
+      const newContent = [
+        deco[0],
+        deco[1],
+        newAccessControlConditions,
+        deco[3],
+        deco[4],
+      ];
+
+      //save the access conditions back to Ceramic
+      console.log(
+        "$$$kl - saving new ceramic access conditions: ",
+        newContent,
+        newAccessControlConditions
+      );
+
+      const result2 = await _updateCeramic(a, streamID, newContent);
+      console.log(
+        "$$$kl - update ceramic access conditions: ",
+        streamID,
+        result
+      );
+
+      return result2;
+    } catch (error) {
+      return `$$$kl - something went wrong encrypting: ${error}`;
     }
   }
 }
