@@ -45,12 +45,13 @@ export function decodeb64(b64String: any) {
  * encrypts a message with Lit returns required details
  * this obfuscates data such that it can be stored on ceramic without
  * non-permissioned eyes seeing what the data is
- * @param {blob} auth authentication from wallet
  * @param {String} aStringThatYouWishToEncrypt the clear text you'd like encrypted
+ * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+ * @param {String} chain the chain you'd like to use for checking the access control conditions
+ * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<Array<any>>} returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
  */
 export async function _encryptWithLit(
-  auth: any[],
   aStringThatYouWishToEncrypt: String,
   accessControlConditions: Array<Object>,
   chain: String,
@@ -102,7 +103,9 @@ export async function _encryptWithLit(
  * decrypt encrypted zip and symmetric key using the lit protocol
  * @param {Uint8Array} encryptedZip encrypted data that will be converted into a string
  * @param {Uint8Array} encryptedSymmKey symmetric key
- * @param {Uint8Array} accessControlConditions conditions that determine access
+ * @param {Array<any>} accessControlConditions conditions that determine access
+ * @param {String} chain the chain you'd like to use for checking the access control conditions
+ * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<string>} promise with the decrypted string
  */
 
@@ -164,8 +167,8 @@ export async function _saveEncryptionKey(
     chain,
   });
   // encrypted blob, sym key
-  // console.log("$$$kl - encryptedSymKey entered: ", encryptedSymmetricKey);
-  // console.log("$$$kl - authSig: ", authSig);
+  // console.log("encryptedSymKey entered: ", encryptedSymmetricKey);
+  // console.log("authSig: ", authSig);
 
   // const newAccessControlConditions = [
   //   {
@@ -192,6 +195,6 @@ export async function _saveEncryptionKey(
       permanant: false,
     }
   );
-  console.log("$$$kl - updated the access control condition");
+  console.log("updated the access control condition");
   return newEncryptedSymmetricKey;
 }

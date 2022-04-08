@@ -6,6 +6,8 @@
     *   [Parameters][2]
 *   [readAndDecrypt][3]
     *   [Parameters][4]
+*   [updateAccess][5]
+    *   [Parameters][6]
 
 ## encryptAndWrite
 
@@ -14,11 +16,11 @@ whatever the module user inputs (as long as it is a string for now)
 
 ### Parameters
 
-*   `toEncrypt` **[String][5]** what the module user wants to encrypt and store on ceramic
-*   `accessControlConditions` **[Array][6]<[Object][7]>** the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: [https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples][8]
-*   `accessControlConditionType` **[String][5]** the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions (optional, default `"accessControlConditions"`)
+*   `toEncrypt` **[String][7]** what the module user wants to encrypt and store on ceramic
+*   `accessControlConditions` **[Array][8]<[Object][9]>** the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: [https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples][10]
+*   `accessControlConditionType` **[String][7]** the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions (optional, default `"accessControlConditions"`)
 
-Returns **[Promise][9]<[String][5]>** A promise that resolves to a streamID for the encrypted data that's been stored
+Returns **[Promise][11]<[String][7]>** A promise that resolves to a streamID for the encrypted data that's been stored
 
 ## readAndDecrypt
 
@@ -26,9 +28,21 @@ Retrieves a stream and decrypts message then returns to user
 
 ### Parameters
 
-*   `streamID` **[String][5]** the streamID of the encrypted data the user wants to access
+*   `streamID` **[String][7]** the streamID of the encrypted data the user wants to access
 
-Returns **[Promise][9]<[String][5]>** A promise that resolves to the unencrypted string of what was stored
+Returns **[Promise][11]<[String][7]>** A promise that resolves to the unencrypted string of what was stored
+
+## updateAccess
+
+Retrieves a stream and decrypts message then returns to user
+
+### Parameters
+
+*   `streamID` **[String][7]** the streamID of the encrypted data that you want to update the access control conditions for
+*   `newAccessControlConditions` **[Array][8]<[Object][9]>** 
+*   `accessControlConditions` **[Array][8]<[Object][9]>** the access control conditions that govern who is able to decrypt this data.  Note that you cannot change the accessControlConditionType using this method, and you must use the same condition type that was used when you ran encryptAndWrite.   See the docs here for examples of accessControlConditions: [https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples][10]
+
+Returns **[Promise][11]<[String][7]>** A promise that resolves to the unencrypted string of what was stored
 
 [1]: #encryptandwrite
 
@@ -38,12 +52,16 @@ Returns **[Promise][9]<[String][5]>** A promise that resolves to the unencrypted
 
 [4]: #parameters-1
 
-[5]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[5]: #updateaccess
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[6]: #parameters-2
 
-[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[7]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[8]: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[10]: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise

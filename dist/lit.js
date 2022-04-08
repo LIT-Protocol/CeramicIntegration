@@ -55,7 +55,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._decryptWithLit = exports._encryptWithLit = exports.decodeb64 = exports.encodeb64 = void 0;
+exports._saveEncryptionKey = exports._decryptWithLit = exports._encryptWithLit = exports.decodeb64 = exports.blobToBase64 = exports.encodeb64 = void 0;
 // import LitJsSdk from 'lit-js-sdk'
 var LitJsSdk = __importStar(require("lit-js-sdk"));
 var to_string_1 = require("uint8arrays/to-string");
@@ -87,6 +87,7 @@ function blobToBase64(blob) {
         reader.readAsDataURL(blob);
     });
 }
+exports.blobToBase64 = blobToBase64;
 /**
  * This function decodes from base 64.
  * it's useful for decrypting symkeys and files in ceramic
@@ -101,11 +102,13 @@ exports.decodeb64 = decodeb64;
  * encrypts a message with Lit returns required details
  * this obfuscates data such that it can be stored on ceramic without
  * non-permissioned eyes seeing what the data is
- * @param {blob} auth authentication from wallet
  * @param {String} aStringThatYouWishToEncrypt the clear text you'd like encrypted
+ * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+ * @param {String} chain the chain you'd like to use for checking the access control conditions
+ * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<Array<any>>} returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
  */
-function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditions, chain, accessControlConditionType) {
+function _encryptWithLit(aStringThatYouWishToEncrypt, accessControlConditions, chain, accessControlConditionType) {
     if (accessControlConditionType === void 0) { accessControlConditionType = "accessControlConditions"; }
     return __awaiter(this, void 0, void 0, function () {
         var authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
@@ -125,6 +128,7 @@ function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditi
                             symmetricKey: symmetricKey,
                             authSig: authSig,
                             chain: chain,
+                            permanant: false,
                         })];
                 case 3:
                     encryptedSymmetricKey = _b.sent();
@@ -136,6 +140,7 @@ function _encryptWithLit(auth, aStringThatYouWishToEncrypt, accessControlConditi
                             symmetricKey: symmetricKey,
                             authSig: authSig,
                             chain: chain,
+                            permanant: false,
                         })];
                 case 5:
                     encryptedSymmetricKey = _b.sent();
@@ -161,7 +166,9 @@ exports._encryptWithLit = _encryptWithLit;
  * decrypt encrypted zip and symmetric key using the lit protocol
  * @param {Uint8Array} encryptedZip encrypted data that will be converted into a string
  * @param {Uint8Array} encryptedSymmKey symmetric key
- * @param {Uint8Array} accessControlConditions conditions that determine access
+ * @param {Array<any>} accessControlConditions conditions that determine access
+ * @param {String} chain the chain you'd like to use for checking the access control conditions
+ * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<string>} promise with the decrypted string
  */
 function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions, chain, accessControlConditionType) {
@@ -214,3 +221,36 @@ function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions
     });
 }
 exports._decryptWithLit = _decryptWithLit;
+// litCeramicIntegration.saveEncryptionKey({
+//   accessControlConditions: newAccessControlConditions,
+//   encryptedSymmetricKey,
+//   authSig,
+//   chain,
+//   permanant: false,
+// });
+function _saveEncryptionKey(newAccessControlConditions, encryptedSymmetricKey, chain) {
+    return __awaiter(this, void 0, void 0, function () {
+        var authSig, newEncryptedSymmetricKey;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, LitJsSdk.checkAndSignAuthMessage({
+                        chain: chain,
+                    })];
+                case 1:
+                    authSig = _a.sent();
+                    return [4 /*yield*/, window.litNodeClient.saveEncryptionKey({
+                            accessControlConditions: newAccessControlConditions,
+                            encryptedSymmetricKey: encryptedSymmetricKey,
+                            authSig: authSig,
+                            chain: chain,
+                            permanant: false,
+                        })];
+                case 2:
+                    newEncryptedSymmetricKey = _a.sent();
+                    console.log("updated the access control condition");
+                    return [2 /*return*/, newEncryptedSymmetricKey];
+            }
+        });
+    });
+}
+exports._saveEncryptionKey = _saveEncryptionKey;

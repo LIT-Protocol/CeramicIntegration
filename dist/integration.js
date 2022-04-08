@@ -77,7 +77,7 @@ var Integration = /** @class */ (function () {
                         return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
                     case 2:
                         a = _a.sent();
-                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(a, toEncrypt, accessControlConditions, this.chain, accessControlConditionType)];
+                        return [4 /*yield*/, (0, lit_1._encryptWithLit)(toEncrypt, accessControlConditions, this.chain, accessControlConditionType)];
                     case 3:
                         en = _a.sent();
                         return [4 /*yield*/, (0, ceramic_1._writeCeramic)(a, en)];
@@ -108,9 +108,11 @@ var Integration = /** @class */ (function () {
                         return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
                     case 1:
                         a = _a.sent();
+                        console.log("authenticated RnD: ", a);
                         return [4 /*yield*/, (0, ceramic_1._readCeramic)(a, streamID)];
                     case 2:
                         en = _a.sent();
+                        console.log("read from ceramic RnD: ", en);
                         return [4 /*yield*/, (0, ceramic_1._decodeFromB64)(en)];
                     case 3:
                         deco = _a.sent();
@@ -121,8 +123,63 @@ var Integration = /** @class */ (function () {
                         return [2 /*return*/, decrypt];
                     case 5:
                         error_2 = _a.sent();
-                        return [2 /*return*/, "something went wrong decrypting: ".concat(error_2, " \n StreamID sent: ").concat(streamID)];
+                        console.log("something went wrong decrypting: ".concat(error_2, " \n StreamID sent: ").concat(streamID));
+                        return [2 /*return*/, "FALSE"];
                     case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Retrieves a stream and decrypts message then returns to user
+     *
+     * @param {String} streamID the streamID of the encrypted data that you want to update the access control conditions for
+     * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  Note that you cannot change the accessControlConditionType using this method, and you must use the same condition type that was used when you ran encryptAndWrite.   See the docs here for examples of accessControlConditions: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+     * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+     */
+    Integration.prototype.updateAccess = function (streamID, newAccessControlConditions) {
+        return __awaiter(this, void 0, void 0, function () {
+            var a, en, deco, result, newContent, result2, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 6, , 7]);
+                        console.log("trying to update permissions for streamID: ", streamID);
+                        return [4 /*yield*/, (0, ceramic_1._authenticateCeramic)(this.ceramicPromise)];
+                    case 1:
+                        a = _a.sent();
+                        console.log("authenticated: ", a);
+                        return [4 /*yield*/, (0, ceramic_1._readCeramic)(a, streamID)];
+                    case 2:
+                        en = _a.sent();
+                        console.log("read from ceramic: ", en);
+                        return [4 /*yield*/, (0, ceramic_1._decodeFromB64)(en)];
+                    case 3:
+                        deco = _a.sent();
+                        console.log("data from ceramic: ", deco);
+                        return [4 /*yield*/, (0, lit_1._saveEncryptionKey)(newAccessControlConditions, deco[1], //encryptedSymmetricKey
+                            this.chain)];
+                    case 4:
+                        result = _a.sent();
+                        console.log("update access result: ", result);
+                        newContent = [
+                            deco[0],
+                            deco[1],
+                            newAccessControlConditions,
+                            deco[3],
+                            deco[4],
+                        ];
+                        //save the access conditions back to Ceramic
+                        console.log("saving new ceramic access conditions: ", newContent, newAccessControlConditions);
+                        return [4 /*yield*/, (0, ceramic_1._updateCeramic)(a, streamID, newContent)];
+                    case 5:
+                        result2 = _a.sent();
+                        console.log("update ceramic access conditions: ", streamID, result);
+                        return [2 /*return*/, result2];
+                    case 6:
+                        error_3 = _a.sent();
+                        return [2 /*return*/, "something went wrong encrypting: ".concat(error_3)];
+                    case 7: return [2 /*return*/];
                 }
             });
         });

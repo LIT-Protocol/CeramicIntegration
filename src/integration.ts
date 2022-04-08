@@ -60,7 +60,6 @@ export class Integration {
     try {
       const a = await _authenticateCeramic(this.ceramicPromise);
       const en = await _encryptWithLit(
-        a,
         toEncrypt,
         accessControlConditions,
         this.chain,
@@ -83,10 +82,10 @@ export class Integration {
     try {
       // makes certain DID/wallet has been auth'ed
       const a = await _authenticateCeramic(this.ceramicPromise);
-      console.log("$$$kl - authenticated RnD: ", a);
+      console.log("authenticated RnD: ", a);
       // read data and retrieve encrypted data
       const en = await _readCeramic(a, streamID);
-      console.log("$$$kl - read from ceramic RnD: ", en);
+      console.log("read from ceramic RnD: ", en);
       // decode data returned from ceramic
       const deco = await _decodeFromB64(en);
       console.log("data from ceramic: ", deco);
@@ -108,30 +107,33 @@ export class Integration {
     }
   }
 
-  //accessControlConditions: Array<Object>
+  /**
+   * Retrieves a stream and decrypts message then returns to user
+   *
+   * @param {String} streamID the streamID of the encrypted data that you want to update the access control conditions for
+   * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  Note that you cannot change the accessControlConditionType using this method, and you must use the same condition type that was used when you ran encryptAndWrite.   See the docs here for examples of accessControlConditions: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
+   * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+   */
   async updateAccess(
     streamID: String,
     newAccessControlConditions: Array<Object>
   ): Promise<any> {
     try {
-      console.log(
-        "$$$kl - trying to update permissions for streamID: ",
-        streamID
-      );
+      console.log("trying to update permissions for streamID: ", streamID);
       const a = await _authenticateCeramic(this.ceramicPromise);
-      console.log("$$$kl - authenticated: ", a);
+      console.log("authenticated: ", a);
       const en = await _readCeramic(a, streamID);
-      console.log("$$$kl - read from ceramic: ", en);
+      console.log("read from ceramic: ", en);
       // decode data returned from ceramic
       const deco = await _decodeFromB64(en);
-      console.log("$$$kl - data from ceramic: ", deco);
+      console.log("data from ceramic: ", deco);
 
       const result = await _saveEncryptionKey(
         newAccessControlConditions,
         deco[1], //encryptedSymmetricKey
         this.chain
       );
-      console.log("$$$kl - update access result: ", result);
+      console.log("update access result: ", result);
 
       //deco mapping:
       // encryptedZip: Uint8Array,
@@ -158,21 +160,17 @@ export class Integration {
 
       //save the access conditions back to Ceramic
       console.log(
-        "$$$kl - saving new ceramic access conditions: ",
+        "saving new ceramic access conditions: ",
         newContent,
         newAccessControlConditions
       );
 
       const result2 = await _updateCeramic(a, streamID, newContent);
-      console.log(
-        "$$$kl - update ceramic access conditions: ",
-        streamID,
-        result
-      );
+      console.log("update ceramic access conditions: ", streamID, result);
 
       return result2;
     } catch (error) {
-      return `$$$kl - something went wrong encrypting: ${error}`;
+      return `something went wrong encrypting: ${error}`;
     }
   }
 }

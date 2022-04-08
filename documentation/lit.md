@@ -56,11 +56,10 @@ non-permissioned eyes seeing what the data is
 
 ### Parameters
 
-*   `auth` **[blob][13]** authentication from wallet
 *   `aStringThatYouWishToEncrypt` **[String][12]** the clear text you'd like encrypted
-*   `accessControlConditions` **[Array][15]<[Object][16]>** 
-*   `chain` **[String][12]** 
-*   `accessControlConditionType` **[String][12]**  (optional, default `"accessControlConditions"`)
+*   `accessControlConditions` **[Array][15]<[Object][16]>** the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: [https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples][17]
+*   `chain` **[String][12]** the chain you'd like to use for checking the access control conditions
+*   `accessControlConditionType` **[String][12]** the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions (optional, default `"accessControlConditions"`)
 
 Returns **[Promise][14]<[Array][15]\<any>>** returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
 
@@ -72,9 +71,9 @@ decrypt encrypted zip and symmetric key using the lit protocol
 
 *   `encryptedZip` **[Uint8Array][11]** encrypted data that will be converted into a string
 *   `encryptedSymmKey` **[Uint8Array][11]** symmetric key
-*   `accessControlConditions` **[Uint8Array][11]** conditions that determine access
-*   `chain` **[string][12]** 
-*   `accessControlConditionType` **[String][12]**  (optional, default `"accessControlConditions"`)
+*   `accessControlConditions` **[Array][15]\<any>** conditions that determine access
+*   `chain` **[String][12]** the chain you'd like to use for checking the access control conditions
+*   `accessControlConditionType` **[String][12]** the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions (optional, default `"accessControlConditions"`)
 
 Returns **[Promise][14]<[string][12]>** promise with the decrypted string
 
@@ -109,3 +108,5 @@ Returns **[Promise][14]<[string][12]>** promise with the decrypted string
 [15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 [16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[17]: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples

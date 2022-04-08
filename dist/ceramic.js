@@ -50,7 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._decodeFromB64 = exports._readCeramic = exports._writeCeramic = exports._authenticateCeramic = exports._createCeramic = void 0;
+exports._decodeFromB64 = exports._readCeramic = exports._updateCeramic = exports._writeCeramic = exports._authenticateCeramic = exports._createCeramic = void 0;
 var http_client_1 = __importDefault(require("@ceramicnetwork/http-client"));
 var stream_caip10_link_1 = require("@ceramicnetwork/stream-caip10-link");
 var stream_tile_1 = require("@ceramicnetwork/stream-tile");
@@ -161,6 +161,40 @@ function _writeCeramic(auth, toBeWritten) {
     });
 }
 exports._writeCeramic = _writeCeramic;
+function _updateCeramic(auth, streamId, newContent) {
+    return __awaiter(this, void 0, void 0, function () {
+        var ceramic, toStore, doc;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!auth) return [3 /*break*/, 3];
+                    ceramic = auth[1];
+                    toStore = {
+                        encryptedZip: (0, lit_1.encodeb64)(newContent[0]),
+                        symKey: (0, lit_1.encodeb64)(newContent[1]),
+                        accessControlConditions: newContent[2],
+                        chain: newContent[3],
+                        accessControlConditionType: newContent[4],
+                    };
+                    return [4 /*yield*/, stream_tile_1.TileDocument.load(ceramic, streamId.valueOf())];
+                case 1:
+                    doc = _a.sent();
+                    console.log("$$$kl - loaded previous ceramic data from StreamID: ", streamId.valueOf());
+                    console.log("$$$kl - previous doc: ", doc);
+                    console.log("$$$kl - new access control conditions: ", newContent[1]);
+                    return [4 /*yield*/, doc.update(toStore)];
+                case 2:
+                    _a.sent();
+                    console.log("$$$kl - new doc: ", doc);
+                    return [2 /*return*/, "updated access conditions stored in Ceramic"];
+                case 3:
+                    console.error("Failed to authenticate in ceramic WRITE");
+                    return [2 /*return*/, "error"];
+            }
+        });
+    });
+}
+exports._updateCeramic = _updateCeramic;
 /**
  * Read to Ceramic.  This function takes in an auth and the streamID of the desired data and then sends it to a ceramic node in the proper format getting back a promised string of whatever was stored
  *
