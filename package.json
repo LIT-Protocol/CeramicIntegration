@@ -23,13 +23,15 @@
     "@ceramicstudio/idx-tools": "^0.11.0",
     "dag-jose": "^0.3.0",
     "dids": "^2.1.0",
-    "documentation": "^13.2.5",
     "http-server": "^14.0.0",
     "key-did-resolver": "^1.2.0",
     "lit-js-sdk": "^1.1.121",
     "multiformats": "~4.6.1",
     "skynet-js": "^4.0.5-beta",
-    "typescript": "^4.5.4",
     "uint8arrays": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "documentation": "^13.2.5"
   }
 }
