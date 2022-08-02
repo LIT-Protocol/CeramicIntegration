@@ -148,3 +148,7 @@ It should return the following:
     }]
 }
 ```
+
+## Dependency Notes
+
+This project depends on https://www.npmjs.com/package/node-web-streams which has a dependency on a project from github via SSH. This means this package may not work on machines without SSH.
