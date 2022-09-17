@@ -13,7 +13,7 @@ export async function getProvider(): Promise<DIDProvider> {
   return threeID.getDidProvider();
 }
 
-export async function getAddress(): Promise<String> {
+export async function getAddress(): Promise<string> {
   // const ethProvider = await web3Modal.connect()
   // const addresses = await ethProvider.enable()
   // const addr = addresses[0]

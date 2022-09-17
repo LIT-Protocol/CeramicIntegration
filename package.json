@@ -1,6 +1,6 @@
 {
   "name": "lit-ceramic-sdk",
-  "version": "1.1.13",
+  "version": "2.0.0",
   "description": "An integration of Lit Protocol with Ceramic Network",
   "license": "MIT",
   "repository": "LIT-Protocol/CeramicIntegration",
@@ -26,7 +26,7 @@
     "documentation": "^13.2.5",
     "http-server": "^14.0.0",
     "key-did-resolver": "^1.2.0",
-    "lit-js-sdk": "^1.1.121",
+    "lit-js-sdk": "file:.yalc/lit-js-sdk",
     "multiformats": "~4.6.1",
     "skynet-js": "^4.0.5-beta",
     "typescript": "^4.5.4",

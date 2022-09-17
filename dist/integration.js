@@ -55,10 +55,10 @@ var Integration = /** @class */ (function () {
      * Encrypts using Lit and then writes using Ceramic
      * whatever the module user inputs (as long as it is a string for now)
      *
-     * @param {String} toEncrypt what the module user wants to encrypt and store on ceramic
+     * @param {string} toEncrypt what the module user wants to encrypt and store on ceramic
      * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
-     * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
-     * @returns {Promise<String>} A promise that resolves to a streamID for the encrypted data that's been stored
+     * @param {string} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
+     * @returns {Promise<string>} A promise that resolves to a streamID for the encrypted data that's been stored
      */
     Integration.prototype.encryptAndWrite = function (toEncrypt, accessControlConditions, accessControlConditionType) {
         if (accessControlConditionType === void 0) { accessControlConditionType = "accessControlConditions"; }
@@ -95,8 +95,8 @@ var Integration = /** @class */ (function () {
     /**
      * Retrieves a stream and decrypts message then returns to user
      *
-     * @param {String} streamID the streamID of the encrypted data the user wants to access
-     * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+     * @param {string} streamID the streamID of the encrypted data the user wants to access
+     * @returns {Promise<string>} A promise that resolves to the unencrypted string of what was stored
      */
     Integration.prototype.readAndDecrypt = function (streamID) {
         return __awaiter(this, void 0, void 0, function () {
@@ -133,9 +133,9 @@ var Integration = /** @class */ (function () {
     /**
      * Retrieves a stream and decrypts message then returns to user
      *
-     * @param {String} streamID the streamID of the encrypted data that you want to update the access control conditions for
+     * @param {string} streamID the streamID of the encrypted data that you want to update the access control conditions for
      * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  Note that you cannot change the accessControlConditionType using this method, and you must use the same condition type that was used when you ran encryptAndWrite.   See the docs here for examples of accessControlConditions: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
-     * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+     * @returns {Promise<string>} A promise that resolves to the unencrypted string of what was stored
      */
     Integration.prototype.updateAccess = function (streamID, newAccessControlConditions) {
         return __awaiter(this, void 0, void 0, function () {

@@ -20,11 +20,11 @@ declare global {
 }
 export class Integration {
   ceramicPromise: Promise<CeramicApi>;
-  chain: String;
+  chain: string;
 
   constructor(
     ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com",
-    chainParam: String = "ethereum"
+    chainParam: string = "ethereum"
   ) {
     this.chain = chainParam;
     // console.log("setting chain to ", this.chain);
@@ -39,16 +39,16 @@ export class Integration {
    * Encrypts using Lit and then writes using Ceramic
    * whatever the module user inputs (as long as it is a string for now)
    *
-   * @param {String} toEncrypt what the module user wants to encrypt and store on ceramic
+   * @param {string} toEncrypt what the module user wants to encrypt and store on ceramic
    * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
-   * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
-   * @returns {Promise<String>} A promise that resolves to a streamID for the encrypted data that's been stored
+   * @param {string} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
+   * @returns {Promise<string>} A promise that resolves to a streamID for the encrypted data that's been stored
    */
   async encryptAndWrite(
-    toEncrypt: String,
+    toEncrypt: string,
     accessControlConditions: Array<Object>,
-    accessControlConditionType: String = "accessControlConditions"
-  ): Promise<String> {
+    accessControlConditionType: string = "accessControlConditions"
+  ): Promise<string> {
     if (
       accessControlConditionType !== "accessControlConditions" &&
       accessControlConditionType !== "evmContractConditions"
@@ -75,10 +75,10 @@ export class Integration {
   /**
    * Retrieves a stream and decrypts message then returns to user
    *
-   * @param {String} streamID the streamID of the encrypted data the user wants to access
-   * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+   * @param {string} streamID the streamID of the encrypted data the user wants to access
+   * @returns {Promise<string>} A promise that resolves to the unencrypted string of what was stored
    */
-  async readAndDecrypt(streamID: String): Promise<any> {
+  async readAndDecrypt(streamID: string): Promise<any> {
     try {
       // makes certain DID/wallet has been auth'ed
       const a = await _authenticateCeramic(this.ceramicPromise);
@@ -110,12 +110,12 @@ export class Integration {
   /**
    * Retrieves a stream and decrypts message then returns to user
    *
-   * @param {String} streamID the streamID of the encrypted data that you want to update the access control conditions for
+   * @param {string} streamID the streamID of the encrypted data that you want to update the access control conditions for
    * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  Note that you cannot change the accessControlConditionType using this method, and you must use the same condition type that was used when you ran encryptAndWrite.   See the docs here for examples of accessControlConditions: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
-   * @returns {Promise<String>} A promise that resolves to the unencrypted string of what was stored
+   * @returns {Promise<string>} A promise that resolves to the unencrypted string of what was stored
    */
   async updateAccess(
-    streamID: String,
+    streamID: string,
     newAccessControlConditions: Array<Object>
   ): Promise<any> {
     try {

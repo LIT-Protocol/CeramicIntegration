@@ -1,4 +1,5 @@
-import * as LitJsSdk from "lit-js-sdk";
+// import * as LitJsSdk from "lit-js-sdk";
+import { LitNodeClient } from "lit-js-sdk";
 
 /**
  * Starts Lit Client in background. should be run upon starting of project.
@@ -8,7 +9,8 @@ import * as LitJsSdk from "lit-js-sdk";
  */
 export async function _startLitClient(window: Window) {
   console.log("Starting Lit Client...");
-  const client = new LitJsSdk.LitNodeClient();
+  // const client = new LitJsSdk.LitNodeClient();
+  const client = new LitNodeClient();
   client.connect();
   window.litNodeClient = client;
 }
