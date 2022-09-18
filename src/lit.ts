@@ -1,6 +1,7 @@
 // import LitJsSdk from 'lit-js-sdk'
 import * as LitJsSdk from "lit-js-sdk";
-import { zipAndEncryptString } from "lit-js-sdk";
+import { checkAndSignAuthMessage, zipAndEncryptString } from "lit-js-sdk";
+import { AllLitChainsKeys } from "lit-js-sdk/dist/types";
 import { toString as uint8ArrayToString } from "uint8arrays/to-string";
 
 /**
@@ -55,10 +56,10 @@ export function decodeb64(b64String: any) {
 export async function _encryptWithLit(
   aStringThatYouWishToEncrypt: string,
   accessControlConditions: Array<Object>,
-  chain: string,
+  chain: AllLitChainsKeys,
   accessControlConditionType: string = "accessControlConditions"
 ): Promise<Array<any>> {
-  let authSig = await LitJsSdk.checkAndSignAuthMessage({
+  let authSig = await checkAndSignAuthMessage({
     chain,
   });
   const { encryptedZip, symmetricKey } = await zipAndEncryptString(
@@ -114,7 +115,7 @@ export async function _decryptWithLit(
   encryptedZip: Uint8Array,
   encryptedSymmKey: Uint8Array,
   accessControlConditions: Array<any>,
-  chain: string,
+  chain: AllLitChainsKeys,
   accessControlConditionType: string = "accessControlConditions"
 ): Promise<string> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
@@ -162,7 +163,7 @@ export async function _decryptWithLit(
 export async function _saveEncryptionKey(
   newAccessControlConditions: Array<any>,
   encryptedSymmetricKey: Uint8Array,
-  chain: string
+  chain: AllLitChainsKeys
 ): Promise<string> {
   let authSig = await LitJsSdk.checkAndSignAuthMessage({
     chain,

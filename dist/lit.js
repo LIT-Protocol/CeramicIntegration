@@ -115,7 +115,7 @@ function _encryptWithLit(aStringThatYouWishToEncrypt, accessControlConditions, c
         var authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, LitJsSdk.checkAndSignAuthMessage({
+                case 0: return [4 /*yield*/, (0, lit_js_sdk_1.checkAndSignAuthMessage)({
                         chain: chain,
                     })];
                 case 1:

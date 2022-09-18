@@ -12,19 +12,22 @@ import {
   _decodeFromB64,
   _updateCeramic,
 } from "./ceramic";
+import { LitNodeClient } from "lit-js-sdk";
+import { AllLitChainsKeys } from "lit-js-sdk/dist/types";
 
 declare global {
   interface Window {
     did?: DID;
+    litNodeClient: LitNodeClient;
   }
 }
 export class Integration {
   ceramicPromise: Promise<CeramicApi>;
-  chain: string;
+  chain: AllLitChainsKeys;
 
   constructor(
     ceramicNodeUrl: string = "https://ceramic-clay.3boxlabs.com",
-    chainParam: string = "ethereum"
+    chainParam: AllLitChainsKeys = "ethereum"
   ) {
     this.chain = chainParam;
     // console.log("setting chain to ", this.chain);

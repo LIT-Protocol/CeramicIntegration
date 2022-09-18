@@ -5,6 +5,8 @@
   "license": "MIT",
   "repository": "LIT-Protocol/CeramicIntegration",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist/**/**",".yalc/**/**"],
   "keywords": [
     "lit",
     "ceramic",
