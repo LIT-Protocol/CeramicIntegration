@@ -59,7 +59,7 @@ Read to Ceramic.  This function takes in an auth and the streamID of the desired
 ### Parameters
 
 *   `auth` **[Array][13]\<any>** is the authentication passed via the user's wallet
-*   `streamId` **[String][11]** ID hash of the stream
+*   `streamId` **[string][11]** ID hash of the stream
 
 Returns **[Promise][12]<[string][11]>** promise with the ceramic streamID's output
 
@@ -93,7 +93,7 @@ the next step in the read and decrypt process
 
 [10]: #parameters-4
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/string
 
 [12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 

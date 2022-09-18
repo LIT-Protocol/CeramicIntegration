@@ -58,6 +58,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports._saveEncryptionKey = exports._decryptWithLit = exports._encryptWithLit = exports.decodeb64 = exports.blobToBase64 = exports.encodeb64 = void 0;
 // import LitJsSdk from 'lit-js-sdk'
 var LitJsSdk = __importStar(require("lit-js-sdk"));
+var lit_js_sdk_1 = require("lit-js-sdk");
 var to_string_1 = require("uint8arrays/to-string");
 /**
  * This function encodes into base 64.
@@ -74,7 +75,7 @@ exports.encodeb64 = encodeb64;
  * This function converts blobs to base 64.
  * for easier storage in ceramic
  * @param {Blob} blob what you'd like to encode
- * @returns {Promise<String>} returns a string of b64
+ * @returns {Promise<string>} returns a string of b64
  */
 function blobToBase64(blob) {
     return new Promise(function (resolve, _) {
@@ -102,10 +103,10 @@ exports.decodeb64 = decodeb64;
  * encrypts a message with Lit returns required details
  * this obfuscates data such that it can be stored on ceramic without
  * non-permissioned eyes seeing what the data is
- * @param {String} aStringThatYouWishToEncrypt the clear text you'd like encrypted
+ * @param {string} aStringThatYouWishToEncrypt the clear text you'd like encrypted
  * @param {Array<Object>} accessControlConditions the access control conditions that govern who is able to decrypt this data.  See the docs here for examples: https://developer.litprotocol.com/docs/SDK/accessControlConditionExamples
- * @param {String} chain the chain you'd like to use for checking the access control conditions
- * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
+ * @param {string} chain the chain you'd like to use for checking the access control conditions
+ * @param {string} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<Array<any>>} returns, in this order: encryptedZipBase64, encryptedSymmetricKeyBase64, accessControlConditions, chain
  */
 function _encryptWithLit(aStringThatYouWishToEncrypt, accessControlConditions, chain, accessControlConditionType) {
@@ -114,12 +115,12 @@ function _encryptWithLit(aStringThatYouWishToEncrypt, accessControlConditions, c
         var authSig, _a, encryptedZip, symmetricKey, encryptedSymmetricKey, encryptedZipBase64, encryptedSymmetricKeyBase64;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, LitJsSdk.checkAndSignAuthMessage({
+                case 0: return [4 /*yield*/, (0, lit_js_sdk_1.checkAndSignAuthMessage)({
                         chain: chain,
                     })];
                 case 1:
                     authSig = _b.sent();
-                    return [4 /*yield*/, LitJsSdk.zipAndEncryptString(aStringThatYouWishToEncrypt)];
+                    return [4 /*yield*/, (0, lit_js_sdk_1.zipAndEncryptString)(aStringThatYouWishToEncrypt)];
                 case 2:
                     _a = _b.sent(), encryptedZip = _a.encryptedZip, symmetricKey = _a.symmetricKey;
                     if (!(accessControlConditionType === "accessControlConditions")) return [3 /*break*/, 4];
@@ -167,8 +168,8 @@ exports._encryptWithLit = _encryptWithLit;
  * @param {Uint8Array} encryptedZip encrypted data that will be converted into a string
  * @param {Uint8Array} encryptedSymmKey symmetric key
  * @param {Array<any>} accessControlConditions conditions that determine access
- * @param {String} chain the chain you'd like to use for checking the access control conditions
- * @param {String} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
+ * @param {string} chain the chain you'd like to use for checking the access control conditions
+ * @param {string} accessControlConditionType the access control condition type you are using.  Pass `accessControlConditions` for traditional access control conditions.  This is the default if you don't pass anything.  Pass `evmContractConditions` for custom smart contract access control conditions
  * @returns {Promise<string>} promise with the decrypted string
  */
 function _decryptWithLit(encryptedZip, encryptedSymmKey, accessControlConditions, chain, accessControlConditionType) {

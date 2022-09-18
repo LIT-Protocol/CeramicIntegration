@@ -1,0 +1,11 @@
+{
+  "version": "v1",
+  "packages": {
+    "lit-js-sdk": {
+      "version": "2.0.0",
+      "signature": "22e21961ac5f7b40205dd94ad12e75be",
+      "file": true,
+      "replaced": "^1.1.121"
+    }
+  }
+}

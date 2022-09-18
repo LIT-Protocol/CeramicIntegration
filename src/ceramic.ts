@@ -80,7 +80,7 @@ export async function _authenticateCeramic(
 export async function _writeCeramic(
   auth: any[],
   toBeWritten: any[]
-): Promise<String> {
+): Promise<string> {
   if (auth) {
     const ceramic = auth[1];
     const toStore = {
@@ -103,9 +103,9 @@ export async function _writeCeramic(
 
 export async function _updateCeramic(
   auth: any[],
-  streamId: String,
+  streamId: string,
   newContent: any[]
-): Promise<String> {
+): Promise<string> {
   if (auth) {
     const ceramic = auth[1];
     const toStore = {
@@ -137,12 +137,12 @@ export async function _updateCeramic(
  * Read to Ceramic.  This function takes in an auth and the streamID of the desired data and then sends it to a ceramic node in the proper format getting back a promised string of whatever was stored
  *
  * @param {any[]} auth is the authentication passed via the user's wallet
- * @param {String} streamId ID hash of the stream
+ * @param {string} streamId ID hash of the stream
  * @returns {Promise<string>} promise with the ceramic streamID's output
  */
 export async function _readCeramic(
   auth: any[],
-  streamId: String
+  streamId: string
 ): Promise<string> {
   if (auth) {
     const ceramic = auth[1];
